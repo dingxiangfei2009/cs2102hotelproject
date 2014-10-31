@@ -69,12 +69,71 @@ a#here {
 /* The maincontent div has zero top and bottom margins. The right margin is 10% of page width to give breathing space on the right.
  * The left margin is set at 190px to make room for the navigation menu. Minimum and maximum widths are set to keep the layout flexible. */
 
-#maincontent {
+#mainContent {
     margin: 0 10% 0 190px;
     min-width: 525px;
     max-width: 640px;
 }
 
+/* Styles for links in the maincontent div. */
+
+#mainContent a {
+    font-weight: bold;
+    text-decoration: none;
+    padding: 2px 4px;
+}
+
+#mainContent a:link, #mainContent a:visited {
+    color: #00425E;
+    border-bottom: #00425E dashed 1px;
+}
+
+#mainContent a:hover, #mainContent a:active {
+    color: #fff;
+    background-color: #00425E;
+    border-bottom: none;
+}
+
+
+/* Styles for the contact form. */
+
+form {
+    margin: 0 0 0 20px;
+}
+
+form h2 {
+    color: #036;
+    font-size: 80%;
+    font-weight: bold;
+    margin: 0 0 5px 10px;
+}
+
+form p {
+    margin: 0 0 5px 0;
+}
+
+.formbox {
+    width: 250px;
+}
+
+fieldset {
+    border: none;
+}
+
+/* Setting display to block forces the label for each form element onto a line of its own. */
+
+label {
+    font-weight: bold;
+    color: #036;
+    display: block;
+}
+
+/* The warning class makes the error messages on the feedback form bold and red. */
+
+.warning {
+    font-weight: bold;
+    color: #f00;
+}
 
 #footer {
 	clear: both;

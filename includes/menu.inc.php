@@ -8,7 +8,28 @@
 				?>
             >Home</a>
         </li>
-    	<li><a href="#">Results</a></li>
-    	<li><a href="#">Hotel</a></li>
-    	<li><a href="#">Log In</a></li>
+    	<li><a href="hotel.php"
+        		<?php 
+					if ($currentPage == 'hotel.php') {
+						echo 'id="here"';
+					} 
+				?>
+            >Results</a>
+        </li>
+    	<li><a href="room.php"
+        		<?php 
+					if ($currentPage == 'room.php') {
+						echo 'id="here"';
+					} 
+				?>
+        	>Hotel Info</a>
+        </li>
+        <li><a href="payment.php"
+        		<?php 
+					if ($currentPage == 'payment.php') {
+						echo 'id="here"';
+					} 
+				?>
+        	>Payment</a>
+        </li>
 	</ul>
