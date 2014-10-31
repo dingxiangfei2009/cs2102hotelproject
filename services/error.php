@@ -1,0 +1,4 @@
+<?php
+function report($error) {
+}
+?>

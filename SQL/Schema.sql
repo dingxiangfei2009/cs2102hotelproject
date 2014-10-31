@@ -10,7 +10,7 @@ CREATE TABLE Customer (
 CREATE TABLE MakeBooking (
 	id 				INT  PRIMARY KEY,
 	checkInDate 	DATE,
-	checkOutDate 	DATE,
+	checkOutDate 	DATE CHECK (checkInDate < checkOutDate),
 	checkInTime 	TIME,
 	checkOutTime 	TIME,
 	price			INT  NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE Room (
 	zipCode 	INT,
 	type 		VARCHAR(255),
 	price 		Numeric NOT NULL,
-	FOREIGN KEY (zipCode) REFERENCES hotel(zipCode) ON DELETE CASCADE,
+	FOREIGN KEY (zipCode) REFERENCES Hotel(zipCode) ON DELETE CASCADE,
 	PRIMARY KEY (roomNumber, zipCode)
 );
 
