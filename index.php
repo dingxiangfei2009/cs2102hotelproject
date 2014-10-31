@@ -17,7 +17,23 @@
 
 
 <div id="mainContent">
-	
+	<h2>Search </h2>
+	<form id="search" method="post" action="">
+    	<p>
+        	<label for="Hotel Name">Hotel Name:</label>
+            <input name="Hotel Name" id="Hotel Name" type="text" class="formbox">
+        </p>
+        <p>
+            <label for="Destination">Destination:</label>
+            <input name="Destination" id="Destination" type="text" class="formbox">
+        </p>
+        
+        /* leave space for date and time */
+        
+        <p>
+            <input name="sendSearch" id="sendSearch" type="submit" value="Search">
+        </p>
+        </form>
 </div>
 
 
