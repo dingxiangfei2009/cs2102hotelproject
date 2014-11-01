@@ -79,11 +79,19 @@ function queryHotelBookings() {
  * insertBooking
  *
  */
-function insertBooking($conn, $room, $hotel, $checkIn, $checkOut) {
-	$stmt = $conn->createPreparedStatement('insert into Booking values (?,?,?,?,?,?,?)');
+function insertBooking($conn, $roomNumber, $hotel, $checkIn, $checkOut) {
+	$stmt = $conn->createPreparedStatement('insert into Booking () values (?,?,?,?,?,?,?)');
 	$stmt->bind(1) or report($stmt->error);
 	$rs = false;
 	$stmt->bind_result($rs);
 	$stmt->fetch();
+}
+
+/**
+ * updateBooking
+ * @param conn, bookingId, roomNumber, hotel, checkIn, checkOut
+ */
+function updateBooking($conn, $bookingId, $roomNumber, $hotel, $checkIn, $checkOut) {
+	return;
 }
 ?>
