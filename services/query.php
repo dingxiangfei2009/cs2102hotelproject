@@ -36,7 +36,8 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offs
 		&$contactNumber,
 		&$avail,
 		&$minPrice,
-		&$maxPrice) {
+		&$maxPrice
+		) use (&$stmt) {
 
 		$stmt->bind_result(
 			$name,
