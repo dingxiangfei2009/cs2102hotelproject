@@ -1,6 +1,9 @@
 <?php
 	session_start();
 	include('./includes/title.inc.php');
+	// mark position of user
+	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/index.php';
+	
 	$missing = array();
 	$Hotel_Name = "";
 	$Destination = "";
@@ -16,7 +19,7 @@
 			// check if required array is missing
 			if (empty($temp) && in_array($key, $required)) {
 				array_push($missing, $key);
-			} else if (in_array($key, $required)) {
+			} else {
 				${$key} = $temp;
 			}
 		}
@@ -40,7 +43,7 @@
 
 <body>
 <div id="header">
-    <h1>Hotel Booking </h1>
+    <h1>Hotel Booking</h1>
 </div>
 
 <div id="wrapper">

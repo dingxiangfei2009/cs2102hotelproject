@@ -32,4 +32,12 @@
 				?>
         	>Payment</a>
         </li>
+        <li><a href="login.php"
+        		<?php 
+					if ($currentPage == 'login.php') {
+						echo 'id="here"';
+					} 
+				?>
+        	>Login / Reg</a>
+        </li>
 	</ul>

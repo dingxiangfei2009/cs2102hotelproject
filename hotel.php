@@ -1,6 +1,9 @@
 <?php
 	session_start();
 	include('./includes/title.inc.php');
+	// mark position of user
+	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/hotel.php';
+	
 	//get class into the page
 	require_once('calendar/classes/tc_calendar.php');
 	
@@ -43,13 +46,16 @@
 
 <body>
     <div id="header">
-        <h1>Search Results </h1>
+        <h1>Hotel Booking</h1>
     </div>
     
     <div id="wrapper">
         <?php include('includes/menu.inc.php'); ?>
         
         <div id="mainContent">
+            <div id="contentHeader">
+                <h2>Search Results </h2>
+            </div>
 			<?php
                 if (!$isStarted) {
                     ?>  <div id="noSearchWarning">

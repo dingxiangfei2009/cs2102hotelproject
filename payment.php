@@ -1,11 +1,13 @@
 <?php
 	session_start();
 	include('./includes/title.inc.php');
+	// mark position of user
+	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/payment.php';
 	$isStarted = isset($_SESSION['roomInfo']);
 	
 	$booking = array();
 	
-	if($isStarted) {
+	if($isStarted) {		
 		// assign the booking details based on chosen hotel's info
 		$roomInfo = $_SESSION['roomInfo'];
 		
@@ -33,13 +35,12 @@
 </head>
 
 <body>
-
-<body>
     <div id="header">
-        <h1>Payment </h1>
+        <h1>Hotel Booking</h1>
     </div>
     
     <div id="wrapper">
+    	<h2>Payment </h2>
         <?php include('includes/menu.inc.php'); ?>
         
         <div id="mainContent">
@@ -58,6 +59,7 @@
                     <?php
 				}
 			?>
+        </div>
     </div>
 </body>
 </html>

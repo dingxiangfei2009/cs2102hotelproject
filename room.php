@@ -1,6 +1,8 @@
 <?php
 	session_start();
 	include('./includes/title.inc.php');
+	// mark position of user
+	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/room.php';
 	
 	// variable store the specific hotel been selected by the user
 	$hotelName = $_GET['hotelname'];
@@ -17,6 +19,9 @@
 		if (!$missing) {
 			$_SESSION['roomInfo'] = $_POST['roomTypes'];
 			header('Location: http://localhost/CS2102/payment.php');
+		} else {
+			$message = "Please select a room type.";
+			echo "<script type='text/javascript'>alert('$message');</script>";	
 		}
 	}
 	
@@ -31,16 +36,15 @@
 </head>
 
 <body>
-
-<body>
     <div id="header">
-        <h1>Hotel Information </h1>
+        <h1>Hotel Booking</h1>
     </div>
     
     <div id="wrapper">
         <?php include('includes/menu.inc.php'); ?>
         
         <div id="mainContent">
+        	<h2>Hotel Information </h2>
         	<div id="hotelInfo">
             	<?php 
 					// display hotel information
