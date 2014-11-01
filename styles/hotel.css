@@ -7,6 +7,31 @@ body {
 	background-color: #EAE2D7;
 }
 
+/* All margins are removed from h1 and h2 tags, except for the bottom margin, which is set to 10px.
+ * The main font-family is reset to Verdana, which looks better for titles, and the color is reset to a dark blue.
+ */
+
+h1, h2 {
+    margin: 0 0 10px 0;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: #036;
+}
+
+h2 {
+    font-size: 140%;
+}
+
+/* Paragraphs have the left and top margins reduced to zero. The auto rule leaves the right margin untouched, 
+ * while the bottom margin is set to 1em. The default font size is reduced, and the spacing between lines increased
+ * for greater readability. */
+
+p {
+    margin: 0 auto 1em 0;
+    padding: 0 20px;
+    font-size: 85%;
+    line-height: 1.4;
+}
+
 
 #header {
 	margin: 0;

@@ -1,3 +1,27 @@
+<?php
+	session_start();
+	include('./includes/title.inc.php');
+	
+	// variable store the specific hotel been selected by the user
+	$hotelName = $_GET['hotelname'];
+	
+	$missing = false;
+	$selectRoom = "";
+	
+	// check if the form has been submitted
+    if (isset($_POST['sendPaymentRequest'])) {
+		if (empty($_POST['roomTypes'])) {
+			$missing = true;
+		}
+		
+		if (!$missing) {
+			$_SESSION['roomInfo'] = $_POST['roomTypes'];
+			header('Location: http://localhost/CS2102/payment.php');
+		}
+	}
+	
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -16,6 +40,75 @@
     <div id="wrapper">
         <?php include('includes/menu.inc.php'); ?>
         
+        <div id="mainContent">
+        	<div id="hotelInfo">
+            	<?php 
+					// display hotel information
+				?>
+            </div>
+            
+            <?php 
+                // pass the number of rooms to be displayed
+                $numberOfRoomTypes = 3;
+				// array containing all room types name to be displayed
+				$roomTypes = array("dummy_type_A", "dummy_type_B", "dummy_type_C");
+                for ($i=0; $i<$numberOfRoomTypes; $i++) {
+                    $roomTypeId = "roomTypeId".$i;
+					$roomPicID = "picWrapper".$i;
+                    ?>
+                        <div id=<?php echo $roomTypeId;?>>
+                            <?php // dummy model for now, need to get room info from SQL 
+							?>
+							<h2><?php echo $roomTypes[$i];?></h2>
+                            <div id=<?php echo $roomPicID ?>>
+                            	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
+                            </div>
+							<p>Price: </p>
+							<p>Availability: </p>
+							<p>Contact Number:</p>
+                        </div>
+                    <?php	
+                }
+            ?>
+            
+            <form id="selectRoom" method="post" action="">
+            	<fieldset id="roomTypes">
+                	<h2>
+                    <label for="roomTypes">Choose a Type: 
+                    <?php if ($missing) { ?>
+                      <span class="warning">Please choose a type to make payment.</span>
+                    <?php } ?>
+                    </label>
+                    </h2>
+                    <div>
+                    	<?php 
+							// for each room type, create a checkbox option
+							for ($i=0; $i<$numberOfRoomTypes; $i++) {
+                    			$roomTypeId = "roomTypeId".$i;
+								?>
+                                    <p>
+                                        <input type="checkbox" name="roomTypes[]" value=<?php echo $roomTypes[$i];?> 
+                                        id=<?php echo $roomTypeId;?> 
+                                        <?php
+										if (isset($_POST['roomTypes'])){
+											if (in_array($roomTypes[$i], $_POST['roomTypes'])) {
+											  echo 'checked';
+											} 
+										}?>
+                                        >
+                                        <label for=<?php echo $roomTypeId;?>><?php echo $roomTypes[$i];?></label>
+                                    </p>
+                           <?php }
+						?>
+                    </div>
+                </fieldset>
+                
+                <p>
+                	<input name="sendPaymentRequest" id="sendPaymentRequest" type="submit" value="Make Payment">
+           		</p>
+            </form>
+            
+        </div>
     </div>
 </body>
 </html>

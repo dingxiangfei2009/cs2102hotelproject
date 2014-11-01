@@ -53,11 +53,30 @@
 			<?php
                 if (!$isStarted) {
                     ?>  <div id="noSearchWarning">
-                    		<h2><span class="warning">Please Search for Hotels via the Home Page! </span></h2>
+                    		<h2><span class="warning">Please search for hotels via the Home Page. </span></h2>
                         </div> <?php
                 } else {
-                	// while loop to display searching results
-					
+                	// for loop to display searching results
+					$resultNumber = 10;
+					for ($i=0; $i<$resultNumber; $i++) {
+						$divID = "result".$i;
+						$picID = "picWrapper".$i;
+						?>
+						<div id=<?php echo $divID ?>> 
+                        <?php // dummy model for now, need to pass the name of hotel as $hotelName into room.php
+						?>
+							<h2><a href="room.php?hotelname=$hotelName">Hotel Name</a></h2>
+                            <div id=<?php echo $picID ?>>
+                            	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
+                            </div>
+							<p>Rating:</p>
+							<p>Address:</p>
+							<p>Price Range:</p>
+							<p>Availability</p>
+							<p>Contact Number:</p>
+						</div>
+                        <?php
+					}
                 }
             ?>
         </div>
