@@ -2,7 +2,7 @@
 	session_start();
 	include('./includes/title.inc.php');
 	// mark position of user
-	$_SESSION['userPosi'] = 'room.php';
+	$_SESSION['userPosi'] = 'Location: room.php';
 	
 	// variable store the specific hotel been selected by the user
 	$hotelName = $_GET['hotelname'];

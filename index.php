@@ -2,7 +2,7 @@
 	session_start();
 	include('./includes/title.inc.php');
 	// mark position of user
-	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/index.php';
+	$_SESSION['userPosi'] = 'Location: index.php';
 	
 	$missing = array();
 	$Hotel_Name = "";
@@ -24,7 +24,7 @@
 			}
 		}
 		
-		if (empty($missing)) {
+		if (count($missing) <= 1) {
 			$_SESSION['searchInfo'] = $_POST;
 			header('Location: hotel.php');
 		}

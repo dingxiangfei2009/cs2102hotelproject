@@ -2,7 +2,7 @@
 	session_start();
 	include('./includes/title.inc.php');
 	// mark position of user
-	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/hotel.php';
+	$_SESSION['userPosi'] = 'Location: hotel.php';
 	
 	//get class into the page
 	require('services/query.php');

@@ -11,9 +11,6 @@
 		// assign the booking details based on chosen hotel's info
 		$roomInfo = $_SESSION['roomInfo'];
 		
-		// generate booking id
-		// TODO: booking id is not available until you insert into table, how?
-		$bookingId = "32974392";
 		// calculate the price needed to pay
 		$totalPrice = 100;
 		
@@ -24,7 +21,21 @@
 						'roomType' => $roomInfo['roomTypes'],
 						'checkInDate' => '05/12/2014',
 						'checkOutDate' => '18/01/2015');
+						
+						
+		// check if the form has been submitted
+		if (isset($_POST['cancel'])) {
+			// head back to room page
+			header('Location: room.php');
+		} else if (isset($_POST['confirm'])) {
+			// push all the info to database and insert into booking table, 
+			$_SESSION['paymentInfo'] = $booking;
+			
+			// direct the page to receipt
+			header('Location: receipt.php');
+		}
 	}
+	
 	// TODO: xhtml dropped, use html5 instead
 ?>
 
@@ -100,9 +111,8 @@
         				</tr>
             		</table>
             		<div>
-            			<input type="submit" value="Book the room"/>&nbsp;&nbsp;
-            			<input type="submit" value="Cancel and return"/>
-            			<input type="hidden" name="action" value="confirm"/>
+            			<input type="submit" name="confirm" id="confirm" value="Confirm"/>&nbsp;&nbsp;
+            			<input type="submit" name="cancel" id="cancel" value="Cancel"/>
             		</div>
             	</form>
             </div>
