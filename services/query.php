@@ -1,6 +1,6 @@
 <?php
-require('connect.php');
 require('error.php');
+require('connect.php');
 /**
  * queryAvailableHotel
  * @param conn, name, location, checkIn, checkOut, offset
@@ -11,9 +11,9 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offs
 	$stmt = $conn->createPreparedStatement(
 		'select h.name, h.mailingAddress, h.zipCode, '	// name, address, zipcode
 		.'h.rating, h.contactNumber, '	// rating, contactNumber
-		.'count(unique r.roomNumber), min(r.price), max(r.price)'	// availability, minPrice, maxPrice
+		.'count(distinct r.roomNumber), min(r.price), max(r.price)'	// availability, minPrice, maxPrice
 		.'from Hotel h, Room r '
-		.'where (r.hotel = h.zipCode) and '
+		.'where (r.zipCode = h.zipCode) and '
 		.'((h.name like ?) or (h.mailingAddress like ?)) '
 		.'and not exists ('
 			.'select * from MakeBooking b, Contains c '
@@ -23,10 +23,10 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offs
 			.'and ((b.checkOutDate > ?) or (b.checkInDate < ?))) '
 		.'group by h.zipCode;'
 		);
-	$stmt->bind('%'.$name.'%', 1) or report($stmt->error);
-	$stmt->bind('%'.$location.'%', 2) or report($stmt->error);
-	$stmt->bind($checkIn, 3) or report($stmt->error);
-	$stmt->bind($checkOut, 4) or report($stmt->error);
+	$stmt->bind_param('%'.$name.'%', 1) or report($stmt->error);
+	$stmt->bind_param('%'.$location.'%', 2) or report($stmt->error);
+	$stmt->bind_param($checkIn, 3) or report($stmt->error);
+	$stmt->bind_param($checkOut, 4) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
 	return function (
 		&$name,

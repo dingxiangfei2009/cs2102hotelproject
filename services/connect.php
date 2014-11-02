@@ -3,10 +3,12 @@
 class Connector {
 	private $conn;
 	function __construct() {
-		$this->conn = mysqli_connect('p:localhost', 'userapp', 'CS@!)@', 'cs2102proj') or die('Server down\n\r'.mysqli_error($conn));
+		$this->conn = mysqli_connect('p:localhost', 'userapp', 'CS@!)@', 'cs2102proj')
+			or die('Server down\n\r'.mysqli_error($this->conn));
 	}
 	public function createPreparedStatement($query) {
-		return $this->conn->prepare($query);
+		return $this->conn->prepare($query)
+			or die(mysqli_error($this->conn));
 	}
 }
 ?>
