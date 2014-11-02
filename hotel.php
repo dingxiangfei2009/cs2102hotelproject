@@ -69,7 +69,7 @@
                 } else {
                 	// for loop to display searching results
 					$resultNumber = 10;
-					$resultSet = queryAvailableHotel($conn);
+					$resultSet = queryAvailableHotel($conn, '', '', '', '');
 					// sorry, yanhao
 					// i will just use callback here
 

@@ -23,10 +23,17 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offs
 			.'and ((b.checkOutDate > ?) or (b.checkInDate < ?))) '
 		.'group by h.zipCode;'
 		);
-	$stmt->bind_param('%'.$name.'%', 1) or report($stmt->error);
-	$stmt->bind_param('%'.$location.'%', 2) or report($stmt->error);
-	$stmt->bind_param($checkIn, 3) or report($stmt->error);
-	$stmt->bind_param($checkOut, 4) or report($stmt->error);
+	$query = array(
+		'name' => '%'.$name.'%',
+		'location' => '%'.$location.'%',
+		'checkIn' => $checkIn,
+		'checkOut' => $checkOut
+	);
+	$stmt->bind_param('ssss',
+		$query['name'],
+		$query['location'],
+		$query['checkIn'],
+		$query['checkOut']) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
 	return function (
 		&$name,

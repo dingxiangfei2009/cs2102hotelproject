@@ -7,8 +7,11 @@ class Connector {
 			or die('Server down\n\r'.mysqli_error($this->conn));
 	}
 	public function createPreparedStatement($query) {
-		return $this->conn->prepare($query)
-			or die(mysqli_error($this->conn));
+		$stmt = $this->conn->prepare($query);
+		if (!$stmt) {
+			report(mysqli_error($this->conn));
+		}
+		return $stmt;
 	}
 }
 ?>
