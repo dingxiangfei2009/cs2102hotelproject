@@ -26,7 +26,7 @@
 		
 		if (empty($missing)) {
 			$_SESSION['searchInfo'] = $_POST;
-			header('Location: http://localhost/CS2102/hotel.php');
+			header('Location: hotel.php');
 		}
 	}
 ?>

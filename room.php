@@ -2,7 +2,7 @@
 	session_start();
 	include('./includes/title.inc.php');
 	// mark position of user
-	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/room.php';
+	$_SESSION['userPosi'] = 'room.php';
 	
 	// variable store the specific hotel been selected by the user
 	$hotelName = $_GET['hotelname'];
@@ -18,7 +18,7 @@
 		
 		if (!$missing) {
 			$_SESSION['roomInfo'] = $_POST['roomTypes'];
-			header('Location: http://localhost/CS2102/payment.php');
+			header('Location: payment.php');
 		} else {
 			$message = "Please select a room type.";
 			echo "<script type='text/javascript'>alert('$message');</script>";	

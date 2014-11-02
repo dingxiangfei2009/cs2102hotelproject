@@ -2,7 +2,7 @@
 	session_start();
 	include('./includes/title.inc.php');
 	// mark position of user
-	$_SESSION['userPosi'] = 'Location: http://localhost/CS2102/payment.php';
+	$_SESSION['userPosi'] = 'payment.php';
 	$isStarted = isset($_SESSION['roomInfo']);
 	
 	$booking = array();
