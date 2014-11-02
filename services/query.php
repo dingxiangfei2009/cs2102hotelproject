@@ -8,10 +8,9 @@ require('connect.php');
  * in data, then return true for success, false for error or null for end of record
  */
 function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offset = 0) {
-	$stmt = $conn->createPreparedStatement(
-		'select h.name, h.mailingAddress, h.zipCode, '	// name, address, zipcode
+	$query = 'select h.name, h.mailingAddress, h.zipCode, '	// name, address, zipcode
 		.'h.rating, h.contactNumber, '	// rating, contactNumber
-		.'count(distinct r.roomNumber), min(r.price), max(r.price)'	// availability, minPrice, maxPrice
+		.'count(distinct r.roomNumber) as avail, min(r.price) as minPrice, max(r.price) as maxPrice '	// availability, minPrice, maxPrice
 		.'from Hotel h, Room r '
 		.'where (r.zipCode = h.zipCode) and '
 		.'((h.name like ?) or (h.mailingAddress like ?)) '
@@ -21,8 +20,8 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offs
 			.'and (c.zipCode = h.zipCode) '
 			.'and (c.roomNumber = r.roomNumber) '
 			.'and ((b.checkOutDate > ?) or (b.checkInDate < ?))) '
-		.'group by h.zipCode;'
-		);
+		.'group by h.zipCode ';
+	$stmt = $conn->createPreparedStatement($query);
 	$query = array(
 		'name' => '%'.$name.'%',
 		'location' => '%'.$location.'%',
