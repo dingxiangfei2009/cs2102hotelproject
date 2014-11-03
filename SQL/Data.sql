@@ -5,7 +5,12 @@ insert into Hotel values
 
 (018956, "10 Bayfront Avenue, Marina Bay, Singapore", 8.6, null, "Marina Bay Sands", "hotel_image/018956.PNG"),
 
-(049326, "80 Collyer Quay, Marina Bay, Singapore", 9.3, null, "The Fullerton Bay Hotel Singapore", "hotel_image/049326.PNG")
+(049326, "80 Collyer Quay, Marina Bay, Singapore", 9.3, null, "The Fullerton Bay Hotel Singapore", "hotel_image/049326.PNG"),
+
+(188592, "13 Purvis street, Bugis, Singapore", 8.6, null, "Adonis Hotel", "hotel_image/188592.PNG"),
+
+(089165, "69 Keong Saik Road, Chinatown, Singapore", 7.7, null, "The Keong Saik Hotel", "hotel_image/089165.PNG"),
+
 
 -- second line here
 -- (,,,,,)
@@ -105,9 +110,37 @@ insert into Room values
 (306, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
 (307, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
 (308, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
-(309, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG")
+(309, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
 
+(101, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(102, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(103, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(104, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(105, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(106, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(107, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(108, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
+(109, 188592, "Superior Queen Room", 175, "hotel_image/188592_Superior_Queen_Room.PNG"),
 
+(201, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(202, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(203, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(204, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(205, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(206, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(207, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(208, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+(209, 188592, "Deluxe King Room", 220, "hotel_image/188592_Deluxe_King_Room.PNG"),
+
+(301, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(302, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(303, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(304, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(305, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(306, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(307, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(308, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
+(309, 188592, "Suite", 488, "hotel_image/188592_Suite.PNG"),
 -- second line here
 -- (,,,,)
 ;
