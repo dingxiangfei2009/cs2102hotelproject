@@ -34,6 +34,7 @@ CREATE TABLE Room (
 	zipCode 	INT,
 	type 		VARCHAR(255),
 	price 		Numeric NOT NULL,
+	image		VARCHAR(255)
 	FOREIGN KEY (zipCode) REFERENCES Hotel(zipCode) ON DELETE CASCADE,
 	PRIMARY KEY (roomNumber, zipCode)
 );

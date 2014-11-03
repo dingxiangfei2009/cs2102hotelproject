@@ -70,7 +70,7 @@
                         $rating,
                         $contactNumber,
                         $image);
-                    var_dump($name);
+                    var_dump($resultSet);
 				?>
                 <div>
                 <h2><a href="room.php?zipcode=<?php echo $zipcode?>"><?php echo $name ?></a></h2>

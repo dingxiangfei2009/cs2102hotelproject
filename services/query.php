@@ -94,9 +94,9 @@ function queryHotelInformation($conn, $zipCode) {
 		from Hotel h
 		where h.zipCode = ?');
 	if (!$stmt)
-		die($conn->getError());
-	$stmt->bind_param('i', $zipCode);
-	$stmt->execute();
+		report($conn->getError());
+	$stmt->bind_param('i', $zipCode) or report($stmt->error);
+	$stmt->execute() or report($stmt->error);
 	$eof = false;
 	return function (
 		&$name,
@@ -112,7 +112,7 @@ function queryHotelInformation($conn, $zipCode) {
 			$mailingAddress,
 			$rating,
 			$contactNumber,
-			$image) or die($stmt->error);
+			$image) or report($stmt->error);
 		$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
@@ -134,7 +134,7 @@ function queryHotelRooms($conn, $zipCode) {
 		order by minPrice desc
 		');
 	if (!$stmt)
-		die($conn->getError());
+		report($conn->getError());
 	$stmt->bind_param('i', $zipCode);
 	$stmt->execute() or report($stmt->error);
 	$eof = false;
@@ -148,7 +148,7 @@ function queryHotelRooms($conn, $zipCode) {
 		$stmt->bind_result(
 			$type,
 			$minPrice,
-			$avail) or die($stmt->error);
+			$avail) or report($stmt->error);
 		$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
