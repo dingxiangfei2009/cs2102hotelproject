@@ -22,7 +22,7 @@ CREATE TABLE MakeBooking (
 CREATE TABLE Hotel (
 	zipCode 		INT PRIMARY KEY,
 	mailingAddress 	VARCHAR(255),
-	rating 			INT,
+	rating 			NUMERIC,
 	contactNumber 	INT,
 	name 			VARCHAR(255) NOT NULL,
 	image			VARCHAR(255)

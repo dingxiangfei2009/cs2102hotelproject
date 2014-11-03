@@ -70,7 +70,6 @@
                         $rating,
                         $contactNumber,
                         $image);
-                    var_dump($resultSet);
 				?>
                 <div>
                 <h2><a href="room.php?zipcode=<?php echo $zipcode?>"><?php echo $name ?></a></h2>
@@ -82,24 +81,24 @@
                 <p>Contact Number:&nbsp;&nbsp;<?php echo $contactNumber ?></p>
                 </div>
                 <?php
-                    $resultSet($x, $x, $x, $x, $x);
+                    $resultSet($x, $x, $x, $x, $x, false);
                 ?>
             </div>
             
             <?php
                 $resultSet = queryHotelRooms($conn, $zipcode);
-                $i = 0;
+                $n = 0;
                 $roomArray = array();
                 while ($resultSet($type, $minPrice, $avail)) {
-                    $roomArray[i] = array();
-                    $roomArray[i]['type'] = $type;
-                    $roomArray[i]['minPrice'] = $minPrice;
-                    $roomArray[i]['avail'] = $avail;
-                    $roomTypeId = "roomTypeId".$i;
-					$roomPicID = "picWrapper".$i;
+                    $roomArray[$n] = array();
+                    $roomArray[$n]['type'] = $type;
+                    $roomArray[$n]['minPrice'] = $minPrice;
+                    $roomArray[$n]['avail'] = $avail;
+                    $roomTypeId = "roomTypeId".$n;
+					$roomPicID = "picWrapper".$n;
             ?>
             <div type="roomInfo" id="<?php echo $roomTypeId ?>">
-				<h2><?php echo $roomTypes[$i] ?></h2>
+				<h2><?php echo $roomTypes[$n] ?></h2>
                 <div id="<?php echo $roomPicID ?>">
                 	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
                 </div>
@@ -107,10 +106,12 @@
 				<p>Availability: <?php echo $avail ?></p>
             </div>
             <?php
+                    $n++;
                 }
+                $resultSet($x, $x, $x, false);
             ?>
             
-            <form id="selectRoom" method="post" action="">
+            <form id="selectRoom" method="post" action="payment.php">
             	<fieldset id="roomTypes">
                 	<h2>
                     <label for="roomTypes">Choose a Type: 
@@ -122,21 +123,19 @@
                     <div>
                     	<?php 
 							// for each room type, create a checkbox option
-							for ($i=0; $i<$numberOfRoomTypes; $i++) {
-                    			$roomTypeId = "roomTypeId".$i;
-								?>
-                        <input type="checkbox" name="roomTypes[]" value=<?php echo $roomTypes[$i];?> 
-                                        id=<?php echo $roomTypeId;?> 
-                                        <?php
-										if (isset($_POST['roomTypes'])){
-											if (in_array($roomTypes[$i], $_POST['roomTypes'])) {
-											  echo 'checked';
-											} 
-										}?>
-                                        >
-                        <label for=<?php echo $roomTypeId;?>><?php echo $roomTypes[$i];?></label>
+							for ($i = 0; $i < $n; $i++) {
+                    			$roomTypeId = "roomTypeId".$roomArray[$i]['type'];
+						?>
+                        <input type="checkbox" name="roomTypes[]" value="<?php echo $roomArray[$i]['type'] ?>" 
+                        <?php
+        						if (isset($_POST['roomTypes']))
+        							if (in_array($roomArray[$i]['type'], $_POST['roomTypes']))
+        							  echo 'checked';
+						?> id="<?php echo $roomTypeId ?>" />
+                        <label for="<?php echo $roomTypeId ?>"><?php echo $roomArray[$i]['type'] ?></label>
                       
-                           <?php }
+                        <?php
+                            }
 						?>
                     </div>
                 </fieldset>
