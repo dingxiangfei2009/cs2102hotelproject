@@ -33,13 +33,14 @@
 		$conn = new Connector();
 	}
 	
+	$orderBy = 0;
 	// sorting order
 	if (!isset($_POST['sortby']) || $_POST['sortby'] == '' || $_POST['sortby'] == 'alphebarical') {
 		// hotel name alphebarical order
-		
+		$orderBy = 0;
 	} else if ($_POST['sortby'] == 'rating') {
 		// 	hotel rating order
-		
+		$orderBy = 1;
 	}
 ?> 
 
@@ -90,9 +91,13 @@
                 } else {
                 	// for loop to display searching results
 					$resultNumber = 10;
-					$resultSet = queryAvailableHotel($conn, '', '', '', '');
-					// sorry, yanhao
-					// i will just use callback here
+					$resultSet = queryAvailableHotel(
+						$conn,
+						$hotelName,
+						$hotelAddress,
+						$isCheckInValid ? $checkInDate : '',
+						$isCheckOutValid ? $checkOutDate : '',
+						$orderBy);
 
 					for ($i=0; $i<$resultNumber
 							&& $resultSet($name, $mailingAddress, $zipCode,
@@ -105,11 +110,11 @@
 			<div id="<?php echo $divID ?>"> 
             <?php // dummy model for now, need to pass the name of hotel as $hotelName into room.php
 			?>
-			<h2><a href="room.php?hotelname=<?php echo $hotelName?>">Hotel Name</a></h2>
+			<h2><a href="room.php?hotelname=<?php echo $hotelName?>"><?php echo $name?></a></h2>
             <div id="<?php echo $picID ?>">
             	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
             </div>
-			<p>Rating:&nbsp;&nbsp;<?php echo $name ?></p>
+			<p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
 			<p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
 			<p>Price Range:&nbsp;&nbsp;<?php echo $minPrice ?>&nbsp;-&nbsp;<?php echo $maxPrice ?></p>
 			<p>Availability:&nbsp;&nbsp;<?php echo $avail ?></p>
@@ -124,7 +129,7 @@
     </div>
     
     <div id="footer">
-	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	<p>&copy; Copyright 2014 Wang YanHao &amp;&amp; Ding XiangFei</p>
 	</div>
 </body>
 </html>

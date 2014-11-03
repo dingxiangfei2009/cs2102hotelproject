@@ -130,7 +130,7 @@
     </div>
     
     <div id="footer">
-	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	<p>&copy; Copyright 2014 Wang YanHao &amp;&amp; Ding XiangFei</p>
 	</div>
 </body>
 </html>

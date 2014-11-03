@@ -3,11 +3,12 @@ require('error.php');
 require('connect.php');
 /**
  * queryAvailableHotel
- * @param conn, name, location, checkIn, checkOut, offset
+ * @param conn, name, location, checkIn, checkOut, offset, order
+ * order = 0 for alphabetical, order = 1 for rating
  * @return a function such that takes in reference to name, location and zipcode and put
  * in data, then return true for success, false for error or null for end of record
  */
-function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offset = 0) {
+function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $order = 0, $offset = 0) {
 	$query = 'select h.name, h.mailingAddress, h.zipCode, '	// name, address, zipcode
 		.'h.rating, h.contactNumber, '	// rating, contactNumber
 		.'count(distinct r.roomNumber) as avail, min(r.price) as minPrice, max(r.price) as maxPrice '	// availability, minPrice, maxPrice
@@ -20,11 +21,20 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $offs
 			.'and (c.zipCode = h.zipCode) '
 			.'and (c.roomNumber = r.roomNumber) '
 			.'and ((b.checkOutDate > ?) or (b.checkInDate < ?))) '
-		.'group by h.zipCode ';
+		.'group by h.zipCode order by ';
+	switch ($order) {
+		case 0:
+			$query .= 'h.name';
+			break;
+		
+		case 1:
+			$query .= 'h.rating';
+			break;
+	}
 	$stmt = $conn->createPreparedStatement($query);
 	$query = array(
-		'name' => '%'.$name.'%',
-		'location' => '%'.$location.'%',
+		'name' => strlen(trim($name)) ? '%'.$name.'%' : '',
+		'location' => strlen(trim($location)) ? '%'.$location.'%' : '',
 		'checkIn' => $checkIn,
 		'checkOut' => $checkOut
 	);

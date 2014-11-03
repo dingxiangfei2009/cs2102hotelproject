@@ -13,7 +13,7 @@ CREATE TABLE MakeBooking (
 	checkOutDate 	DATE CHECK (checkInDate < checkOutDate),
 	checkInTime 	TIME,
 	checkOutTime 	TIME,
-	price			INT  NOT NULL,
+	price			NUMERIC  NOT NULL,
 	paymentMethod 	VARCHAR(255),
 	payDate 		DATE
 );
