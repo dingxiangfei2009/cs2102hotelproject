@@ -5,7 +5,7 @@ insert into Hotel values
 
 (018956, "10 Bayfront Avenue, Marina Bay, Singapore", 8.6, null, "Marina Bay Sands", "hotel_image/018956.PNG"),
 
-(049326, "80 Collyer Quay, Marina Bay, Singapore", 9.3, null, "The Fullerton Bay Hotel Singapore", "hotel_image/049326.PNG"),
+(049326, "80 Collyer Quay, Marina Bay, Singapore", 9.3, null, "The Fullerton Bay Hotel Singapore", "hotel_image/049326.PNG")
 
 -- second line here
 -- (,,,,,)
@@ -105,7 +105,7 @@ insert into Room values
 (306, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
 (307, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
 (308, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
-(309, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG"),
+(309, 049326, "Double or Twin Room with Bay View", 640, "hotel_image/049326_Double_or_Twin_Room_with_Bay_View.PNG")
 
 
 -- second line here

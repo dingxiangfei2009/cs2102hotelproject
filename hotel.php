@@ -90,7 +90,6 @@
             <?php
                 } else {
                 	// for loop to display searching results
-					$resultNumber = 10;
 					$resultSet = queryAvailableHotel(
 						$conn,
 						$hotelName,
@@ -99,10 +98,10 @@
 						$isCheckOutValid ? $checkOutDate : '',
 						$orderBy);
 
-					for ($i=0; $i<$resultNumber
-							&& $resultSet($name, $mailingAddress, $zipCode,
+					$i = 0;
+					while ($resultSet($name, $mailingAddress, $zipCode,
 								$rating, $contactNumber, $image, $avail,
-								$minPrice, $maxPrice); $i++) {
+								$minPrice, $maxPrice)) {
 						$divID = "result".$i;
 						$picID = "picWrapper".$i;
 						// ------ start result iteration------
@@ -120,6 +119,7 @@
 			</div>
             <?php
             		// ------ end result iteration ------
+            		$i++;
 					}
                 }
             ?>

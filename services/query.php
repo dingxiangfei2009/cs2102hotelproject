@@ -24,11 +24,11 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $orde
 		.'group by h.zipCode order by ';
 	switch ($order) {
 		case 0:
-			$query .= 'h.name';
+			$query .= 'h.name asc';
 			break;
 		
 		case 1:
-			$query .= 'h.rating';
+			$query .= 'h.rating desc';
 			break;
 	}
 	$stmt = $conn->createPreparedStatement($query);
