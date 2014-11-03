@@ -24,7 +24,8 @@ CREATE TABLE Hotel (
 	mailingAddress 	VARCHAR(255),
 	rating 			INT,
 	contactNumber 	INT,
-	name 			VARCHAR(255) NOT NULL
+	name 			VARCHAR(255) NOT NULL,
+	image			VARCHAR(255)
 );
 
 

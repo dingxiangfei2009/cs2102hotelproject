@@ -1,5 +1,6 @@
 <?php
 // encapuslation for application data connection
+require_once('error.php');
 class Connector {
 	private $conn;
 	function __construct() {
@@ -12,6 +13,9 @@ class Connector {
 			report(mysqli_error($this->conn));
 		}
 		return $stmt;
+	}
+	public function getError() {
+		return $this->conn->error;
 	}
 }
 ?>

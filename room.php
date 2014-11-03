@@ -1,13 +1,14 @@
 <?php
+    require_once('services/query.php');
 	session_start();
 	include('./includes/title.inc.php');
 	// mark position of user
 	$_SESSION['userPosi'] = 'Location: room.php';
 	
-	$isStarted = isset($_GET['hotelname']);
+	$isStarted = isset($_GET['zipcode']);
 	if ($isStarted) {
 		// variable store the specific hotel been selected by the user
-		$hotelName = $_GET['hotelname'];
+		$zipcode = $_GET['zipcode'];
 	}
 	
 	$missing = false;
@@ -58,33 +59,54 @@
 			} else {
 		?>
         
-       	  <div id="hotelInfo">
+       	    <div id="hotelInfo">
             	<?php 
 					// display hotel information
+                    $conn = new Connector();
+                    $resultSet = queryHotelInformation($conn, $zipcode);
+                    $resultSet(
+                        $name,
+                        $mailingAddress,
+                        $rating,
+                        $contactNumber,
+                        $image);
+                    var_dump($name);
 				?>
+                <div>
+                <h2><a href="room.php?zipcode=<?php echo $zipcode?>"><?php echo $name ?></a></h2>
+                <div id="<?php echo $picID ?>">
+                    <img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
+                </div>
+                <p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
+                <p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
+                <p>Contact Number:&nbsp;&nbsp;<?php echo $contactNumber ?></p>
+                </div>
+                <?php
+                    $resultSet($x, $x, $x, $x, $x);
+                ?>
             </div>
             
-            <?php 
-                // pass the number of rooms to be displayed
-                $numberOfRoomTypes = 3;
-				// array containing all room types name to be displayed
-				$roomTypes = array("dummy_type_A", "dummy_type_B", "dummy_type_C");
-                for ($i=0; $i<$numberOfRoomTypes; $i++) {
+            <?php
+                $resultSet = queryHotelRooms($conn, $zipcode);
+                $i = 0;
+                $roomArray = array();
+                while ($resultSet($type, $minPrice, $avail)) {
+                    $roomArray[i] = array();
+                    $roomArray[i]['type'] = $type;
+                    $roomArray[i]['minPrice'] = $minPrice;
+                    $roomArray[i]['avail'] = $avail;
                     $roomTypeId = "roomTypeId".$i;
 					$roomPicID = "picWrapper".$i;
-                    ?>
-                        <div type="roomInfo" id=<?php echo $roomTypeId;?>>
-                            <?php // dummy model for now, need to get room info from SQL 
-							?>
-							<h2><?php echo $roomTypes[$i];?></h2>
-                            <div id=<?php echo $roomPicID ?>>
-                            	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
-                            </div>
-							<p>Price: </p>
-							<p>Availability: </p>
-							<p>Contact Number:</p>
-                        </div>
-                    <?php	
+            ?>
+            <div type="roomInfo" id="<?php echo $roomTypeId ?>">
+				<h2><?php echo $roomTypes[$i] ?></h2>
+                <div id="<?php echo $roomPicID ?>">
+                	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
+                </div>
+				<p>Minimum Price: <?php echo $minPrice ?></p>
+				<p>Availability: <?php echo $avail ?></p>
+            </div>
+            <?php
                 }
             ?>
             

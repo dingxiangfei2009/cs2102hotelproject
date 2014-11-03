@@ -1,6 +1,5 @@
 <?php
-require('error.php');
-require('connect.php');
+require_once('connect.php');
 /**
  * queryAvailableHotel
  * @param conn, name, location, checkIn, checkOut, offset, order
@@ -9,9 +8,10 @@ require('connect.php');
  * in data, then return true for success, false for error or null for end of record
  */
 function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $order = 0, $offset = 0) {
-	$query = 'select h.name, h.mailingAddress, h.zipCode, '	// name, address, zipcode
-		.'h.rating, h.contactNumber, '	// rating, contactNumber
-		.'count(distinct r.roomNumber) as avail, min(r.price) as minPrice, max(r.price) as maxPrice '	// availability, minPrice, maxPrice
+	$query = 'select h.name, h.mailingAddress, h.zipCode,'	// name, address, zipcode
+		.'h.rating, h.contactNumber, h.image,'	// rating, contactNumber
+		.'count(distinct r.roomNumber) as avail,'
+		.'min(r.price) as minPrice, max(r.price) as maxPrice '	// availability, minPrice, maxPrice
 		.'from Hotel h, Room r '
 		.'where (r.zipCode = h.zipCode) and '
 		.'((h.name like ?) or (h.mailingAddress like ?)) '
@@ -44,33 +44,120 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $orde
 		$query['checkIn'],
 		$query['checkOut']) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
+	$eof = false;
 	return function (
 		&$name,
 		&$mailingAddress,
 		&$zipCode,
 		&$rating,
 		&$contactNumber,
+		&$image,
 		&$avail,
 		&$minPrice,
 		&$maxPrice
-		) use (&$stmt) {
-
+		) use (&$stmt, &$eof) {
+		if ($eof)
+			return null;
 		$stmt->bind_result(
 			$name,
 			$mailingAddress,
 			$zipCode,
 			$rating,
 			$contactNumber,
+			$image,
 			$avail,
 			$minPrice,
 			$maxPrice
 		) or report($stmt->error);
-		return $stmt->fetch();
+		$retVal = $stmt->fetch();
+		if ($retVal)
+			return $retVal;
+		else {
+			$eof = true;
+			$stmt->close();
+			return $retVal;
+		}
+	};
+}
+
+/**
+ * queryHotelInformation
+ * @param conn, zipCode
+ * conn: connector, zipCode: zip code
+ * @return a function of
+ * 		@param name, mailingAddress, zipCode, rating
+ */
+function queryHotelInformation($conn, $zipCode) {
+	$stmt = $conn->createPreparedStatement(
+		'select h.name, h.mailingAddress,
+		h.rating, h.contactNumber, h.image
+		from Hotel h
+		where h.zipCode = ?');
+	if (!$stmt)
+		die($conn->getError());
+	$stmt->bind_param('i', $zipCode);
+	$stmt->execute();
+	$eof = false;
+	return function (
+		&$name,
+		&$mailingAddress,
+		&$rating,
+		&$contactNumber,
+		&$image
+		) use (&$stmt, &$eof) {
+		if (eof)
+			return null;
+		$stmt->bind_result(
+			$name,
+			$mailingAddress,
+			$rating,
+			$contactNumber,
+			$image) or die($stmt->error);
+		$retVal = $stmt->fetch();
+		if ($retVal)
+			return $retVal;
+		else {
+			$eof = true;
+			$stmt->close();
+			return $retVal;
+		}
 	};
 }
 
 function queryHotelRooms($conn, $zipCode) {
-	$stmt = $conn->createPreparedStatement('');
+	$stmt = $conn->createPreparedStatement('
+		select r.type, min(r.price) as minPrice,
+		count(distinct r) as avail
+		from Room r
+		where (r.zipCode = ?)
+		group by r.type
+		order by minPrice desc
+		');
+	if (!$stmt)
+		die($conn->getError());
+	$stmt->bind_param('i', $zipCode);
+	$stmt->execute() or report($stmt->error);
+	$eof = false;
+	return function (
+		&$type,
+		&$minPrice,
+		&$avail
+		) use (&$stmt) {
+		if ($eof)
+			return null;
+		$stmt->bind_result(
+			$type,
+			$minPrice,
+			$avail) or die($stmt->error);
+		$retVal = $stmt->fetch();
+		if ($retVal)
+			return $retVal;
+		else {
+			$eof = true;
+			$stmt->close();
+			return $retVal;
+		}
+	};
 }
 
 /**

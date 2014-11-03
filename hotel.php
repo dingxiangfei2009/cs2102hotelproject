@@ -101,16 +101,14 @@
 
 					for ($i=0; $i<$resultNumber
 							&& $resultSet($name, $mailingAddress, $zipCode,
-								$rating, $contactNumber, $avail,
+								$rating, $contactNumber, $image, $avail,
 								$minPrice, $maxPrice); $i++) {
 						$divID = "result".$i;
 						$picID = "picWrapper".$i;
 						// ------ start result iteration------
 			?>
-			<div id="<?php echo $divID ?>"> 
-            <?php // dummy model for now, need to pass the name of hotel as $hotelName into room.php
-			?>
-			<h2><a href="room.php?hotelname=<?php echo $hotelName?>"><?php echo $name?></a></h2>
+			<div id="<?php echo $divID ?>">
+			<h2><a href="room.php?zipcode=<?php echo $zipCode?>"><?php echo $name?></a></h2>
             <div id="<?php echo $picID ?>">
             	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
             </div>
