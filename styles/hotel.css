@@ -163,6 +163,10 @@ label {
 	display:inline-block;
 }
 
+#sortby {
+	display:inline-block;
+}
+
 #checkin {
 	font-weight: bold;
     color: #036;
@@ -188,6 +192,18 @@ label {
     font-weight: bold;
     color: #f00;
 }
+
+#noSearchWarning {
+	float:right;
+	position:absolute;
+	top: 343px;
+	left: 506px;
+	width:35em;
+	height:18em;
+	margin-top: -9em; /*set to a negative number 1/2 of your height*/
+	margin-left: -15em; /*set to a negative number 1/2 of your width*/
+}
+
 .roomInfo {
 	top: 200px;
 	bottom: 20px;

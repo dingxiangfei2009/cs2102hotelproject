@@ -58,7 +58,7 @@
 <?php
     if (!$isStarted) {
 ?>
-            <div id="noRoomInfoWarning">
+            <div id="noSearchWarning">
         		<h2><span class="warning">Please search for hotels via the Home Page </span></h2>
                 <h2><span class="warning">or select a room via the Hotel Page! </span></h2>
             </div>

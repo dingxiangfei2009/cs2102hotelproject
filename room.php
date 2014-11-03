@@ -58,7 +58,7 @@
 			} else {
 		?>
         
-        	<div id="hotelInfo">
+       	  <div id="hotelInfo">
             	<?php 
 					// display hotel information
 				?>
@@ -126,7 +126,7 @@
             <?php 
 			}
 		?>
-        </div>
+      </div>
     </div>
     
     <div id="footer">

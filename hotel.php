@@ -31,10 +31,15 @@
 		}
 		
 		$conn = new Connector();
-
-		//	$search_sql = "";
-		//	$search_query = mysql_query($search_sql);	
-		//	$search_rs = mysql_fetch_assoc($search_query);
+	}
+	
+	// sorting order
+	if (!isset($_POST['sortby']) || $_POST['sortby'] == '' || $_POST['sortby'] == 'alphebarical') {
+		// hotel name alphebarical order
+		
+	} else if ($_POST['sortby'] == 'rating') {
+		// 	hotel rating order
+		
 	}
 ?> 
 
@@ -56,11 +61,24 @@
         <?php include('includes/menu.inc.php'); ?>
         
         <div id="mainContent">
-            <div id="contentHeader">
-                <h2>Search Results </h2>
-            </div>
             <div id="sort">
-                
+                <form id="sortHotelForm" method="post" action="">
+                  <label for="sortHotelForm">Search results sorted by:
+                    <select name="sortby" id="sortby">
+                      <option value="alphebarical"
+                                            <?php
+                                            if (!$_POST || $_POST['sortby'] == '' || $_POST['sortby'] == 'alphebarical') {
+                                              echo 'selected';
+                                            } ?>>Alphebarical</option>
+                      <option value="rating"
+                                            <?php
+                                            if ($_POST && $_POST['sortby'] == 'rating') {
+                                              echo 'selected';
+                                            } ?>>Rating</option>
+                    </select>
+                  <input type="submit" value="Sort" id="sort" name="sort"/>
+                  </label>
+              </form>
             </div>
 			<?php
                 if (!$isStarted) {
