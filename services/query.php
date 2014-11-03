@@ -54,8 +54,7 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $orde
 		&$image,
 		&$avail,
 		&$minPrice,
-		&$maxPrice,
-		$continue = true
+		&$maxPrice
 		) use (&$stmt, &$eof) {
 		if ($eof)
 			return null;
@@ -70,9 +69,7 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $orde
 			$minPrice,
 			$maxPrice
 		) or report($stmt->error);
-		$retVal = false;
-		if ($continue)
-			$retVal = $stmt->fetch();
+		$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
 		else {
@@ -106,10 +103,9 @@ function queryHotelInformation($conn, $zipCode) {
 		&$mailingAddress,
 		&$rating,
 		&$contactNumber,
-		&$image,
-		$continue = true
+		&$image
 		) use (&$stmt, &$eof) {
-		if ($eof)
+		if (eof)
 			return null;
 		$stmt->bind_result(
 			$name,
@@ -117,9 +113,7 @@ function queryHotelInformation($conn, $zipCode) {
 			$rating,
 			$contactNumber,
 			$image) or report($stmt->error);
-		$retVal = false;
-		if ($continue)
-			$retVal = $stmt->fetch();
+		$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
 		else {
@@ -133,7 +127,7 @@ function queryHotelInformation($conn, $zipCode) {
 function queryHotelRooms($conn, $zipCode) {
 	$stmt = $conn->createPreparedStatement('
 		select r.type, min(r.price) as minPrice,
-		count(r.roomNumber) as avail
+		count(distinct r) as avail
 		from Room r
 		where (r.zipCode = ?)
 		group by r.type
@@ -147,18 +141,15 @@ function queryHotelRooms($conn, $zipCode) {
 	return function (
 		&$type,
 		&$minPrice,
-		&$avail,
-		$continue = true
-		) use (&$stmt, &$eof) {
+		&$avail
+		) use (&$stmt) {
 		if ($eof)
 			return null;
 		$stmt->bind_result(
 			$type,
 			$minPrice,
 			$avail) or report($stmt->error);
-		$retVal = false;
-		if ($continue)
-			$retVal = $stmt->fetch();
+		$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
 		else {
