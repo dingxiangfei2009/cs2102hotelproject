@@ -52,7 +52,6 @@
     </div>
     
     <div id="wrapper">
-    	<h2>Payment </h2>
         <?php include('includes/menu.inc.php'); ?>
         
         <div id="mainContent">
@@ -122,5 +121,9 @@
 ?>
         </div>
     </div>
+    
+    <div id="footer">
+	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	</div>
 </body>
 </html>

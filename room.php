@@ -4,8 +4,11 @@
 	// mark position of user
 	$_SESSION['userPosi'] = 'Location: room.php';
 	
-	// variable store the specific hotel been selected by the user
-	$hotelName = $_GET['hotelname'];
+	$isStarted = isset($_GET['hotelname']);
+	if ($isStarted) {
+		// variable store the specific hotel been selected by the user
+		$hotelName = $_GET['hotelname'];
+	}
 	
 	$missing = false;
 	$selectRoom = "";
@@ -44,7 +47,17 @@
         <?php include('includes/menu.inc.php'); ?>
         
         <div id="mainContent">
-        	<h2>Hotel Information </h2>
+        <?php 
+			if (!$isStarted) {
+				// display warning	
+				?>
+                <div id="noSearchWarning">
+                    <h2><span class="warning">Please search for hotels via the Home Page. </span></h2>
+                </div>
+                <?php
+			} else {
+		?>
+        
         	<div id="hotelInfo">
             	<?php 
 					// display hotel information
@@ -60,7 +73,7 @@
                     $roomTypeId = "roomTypeId".$i;
 					$roomPicID = "picWrapper".$i;
                     ?>
-                        <div id=<?php echo $roomTypeId;?>>
+                        <div type="roomInfo" id=<?php echo $roomTypeId;?>>
                             <?php // dummy model for now, need to get room info from SQL 
 							?>
 							<h2><?php echo $roomTypes[$i];?></h2>
@@ -90,8 +103,7 @@
 							for ($i=0; $i<$numberOfRoomTypes; $i++) {
                     			$roomTypeId = "roomTypeId".$i;
 								?>
-                                    <p>
-                                        <input type="checkbox" name="roomTypes[]" value=<?php echo $roomTypes[$i];?> 
+                        <input type="checkbox" name="roomTypes[]" value=<?php echo $roomTypes[$i];?> 
                                         id=<?php echo $roomTypeId;?> 
                                         <?php
 										if (isset($_POST['roomTypes'])){
@@ -100,8 +112,8 @@
 											} 
 										}?>
                                         >
-                                        <label for=<?php echo $roomTypeId;?>><?php echo $roomTypes[$i];?></label>
-                                    </p>
+                        <label for=<?php echo $roomTypeId;?>><?php echo $roomTypes[$i];?></label>
+                      
                            <?php }
 						?>
                     </div>
@@ -111,8 +123,14 @@
                 	<input name="sendPaymentRequest" id="sendPaymentRequest" type="submit" value="Make Payment">
            		</p>
             </form>
-            
+            <?php 
+			}
+		?>
         </div>
     </div>
+    
+    <div id="footer">
+	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	</div>
 </body>
 </html>

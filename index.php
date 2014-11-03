@@ -80,9 +80,10 @@
             
             <table border="0" cellspacing="0" cellpadding="2">
             <tr>
-            <td nowrap>Check In Date :</td>
-            <td>
-         		<?php
+            <td nowrap id="checkin"><p>Check In Date :</p></td>
+            <td id="calendar">
+         		<p>
+         		  <?php
 					//get class into the page
 					require_once('calendar/classes/tc_calendar.php');
 					
@@ -96,14 +97,15 @@
 					$myCalendar->setAlignment('left', 'bottom');
 					$myCalendar->writeScript();  
 				?>
-          	</td>
+       		  </p></td>
             </tr>
             </table>
             
             <table border="0" cellspacing="0" cellpadding="2">
           	<tr>
-            <td nowrap>Check Out Date :</td>
-            <td>
+            <td nowrap id="checkout"><p>Check Out Date :</p></td>
+            <p>&nbsp;</p>
+            <td id = "calendar">
             	<?php
 					//get class into the page
 					require_once('calendar/classes/tc_calendar.php');
@@ -120,8 +122,8 @@
 				?>
         	</td>
             </tr>
-            </table>
-            
+</table>
+            <p>&nbsp;</p>
             <p>
             	<input name="sendSearch" id="sendSearch" type="submit" value="Search" />
     		</p>

@@ -76,6 +76,7 @@
         <?php include('includes/menu.inc.php'); ?>
         
         <div id="mainContent">
+        	<div id="login">
         	<h2>Login </h2>
         	  <form action="" method="post" id="loginForm">
                   <p>
@@ -90,7 +91,9 @@
                     <input type="submit" name="login" id="login" value="Login">
                   </p>
             </form>
+        	</div>
             
+        	<div id="reg">
             <h2>Register User</h2>
             <form action="" method="post" id="regForm">
                   <p>
@@ -106,20 +109,20 @@
                   </p>
                   
                   <p>
-                    <label for="sex">Sex:</label>
+                    <label for="sex" id="sex">Sex:</label>
                     <p>
                         <input name="sex" type="radio" value="Male" id="sex-male" 
                         <?php
                         if ($_POST && $_POST['sex'] == 'male') { 
                           echo 'checked';
                         } ?>>
-                        <label for="sex-male">Male</label>
+                        <label for="sex-male" id="sex">Male</label>
                         <input name="sex" type="radio" value="Female" id="sex-female" 
                         <?php
                         if ($_POST && $_POST['sex'] == 'female') {
                           echo 'checked';
                         } ?>>
-                        <label for="sex-female">Female</label>
+                        <label for="sex-female" id="sex">Female</label>
                     </p>
                   </p>
                   
@@ -171,7 +174,12 @@
                     <input type="submit" name="register" id="register" value="Register">
                   </p>
             </form>
+            </div>
         </div>
    </div>
+   
+   <div id="footer">
+	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	</div>
 </body>
 </html>

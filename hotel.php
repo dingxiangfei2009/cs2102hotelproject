@@ -59,6 +59,9 @@
             <div id="contentHeader">
                 <h2>Search Results </h2>
             </div>
+            <div id="sort">
+                
+            </div>
 			<?php
                 if (!$isStarted) {
             ?>
@@ -101,5 +104,9 @@
             ?>
         </div>
     </div>
+    
+    <div id="footer">
+	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	</div>
 </body>
 </html>
