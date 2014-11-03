@@ -54,7 +54,8 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $orde
 		&$image,
 		&$avail,
 		&$minPrice,
-		&$maxPrice
+		&$maxPrice,
+		$continue = true
 		) use (&$stmt, &$eof) {
 		if ($eof)
 			return null;
@@ -69,7 +70,9 @@ function queryAvailableHotel($conn, $name, $location, $checkIn, $checkOut, $orde
 			$minPrice,
 			$maxPrice
 		) or report($stmt->error);
-		$retVal = $stmt->fetch();
+		$retVal = false;
+		if ($continue)
+			$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
 		else {
@@ -103,9 +106,10 @@ function queryHotelInformation($conn, $zipCode) {
 		&$mailingAddress,
 		&$rating,
 		&$contactNumber,
-		&$image
+		&$image,
+		$continue = true
 		) use (&$stmt, &$eof) {
-		if (eof)
+		if ($eof)
 			return null;
 		$stmt->bind_result(
 			$name,
@@ -113,7 +117,9 @@ function queryHotelInformation($conn, $zipCode) {
 			$rating,
 			$contactNumber,
 			$image) or report($stmt->error);
-		$retVal = $stmt->fetch();
+		$retVal = false;
+		if ($continue)
+			$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
 		else {
@@ -124,10 +130,13 @@ function queryHotelInformation($conn, $zipCode) {
 	};
 }
 
+/**
+ * queryHotelRooms
+ */
 function queryHotelRooms($conn, $zipCode) {
 	$stmt = $conn->createPreparedStatement('
 		select r.type, min(r.price) as minPrice,
-		count(distinct r) as avail
+		count(r.roomNumber) as avail
 		from Room r
 		where (r.zipCode = ?)
 		group by r.type
@@ -141,15 +150,18 @@ function queryHotelRooms($conn, $zipCode) {
 	return function (
 		&$type,
 		&$minPrice,
-		&$avail
-		) use (&$stmt) {
+		&$avail,
+		$continue = true
+		) use (&$stmt, &$eof) {
 		if ($eof)
 			return null;
 		$stmt->bind_result(
 			$type,
 			$minPrice,
 			$avail) or report($stmt->error);
-		$retVal = $stmt->fetch();
+		$retVal = false;
+		if ($continue)
+			$retVal = $stmt->fetch();
 		if ($retVal)
 			return $retVal;
 		else {
@@ -183,7 +195,12 @@ function queryHotelBookings() {
  *
  */
 function insertBooking($conn, $roomNumber, $hotel, $checkIn, $checkOut) {
-	$stmt = $conn->createPreparedStatement('insert into Booking () values (?,?,?,?,?,?,?)');
+	$stmt = $conn->createPreparedStatement(
+		'select floor(rand() * 2147483648) as result from MakeBooking b where b.id <> result limit 1');
+	$stmt = $conn->createPreparedStatement(
+		'insert into Booking
+		select
+		from MakeBooking b');
 	$stmt->bind(1) or report($stmt->error);
 	$rs = false;
 	$stmt->bind_result($rs);

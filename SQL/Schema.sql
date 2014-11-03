@@ -9,20 +9,22 @@ CREATE TABLE Customer (
 
 CREATE TABLE MakeBooking (
 	id 				INT  PRIMARY KEY,
+	emailAddress	VARCHAR(255),
 	checkInDate 	DATE,
 	checkOutDate 	DATE CHECK (checkInDate < checkOutDate),
 	checkInTime 	TIME,
 	checkOutTime 	TIME,
 	price			NUMERIC  NOT NULL,
 	paymentMethod 	VARCHAR(255),
-	payDate 		DATE
+	payDate 		DATE,
+	FOREIGN KEY (emailAddress) REFERENCES Customer(emailAddress) ON DELETE CASCADE
 );
 
 
 CREATE TABLE Hotel (
 	zipCode 		INT PRIMARY KEY,
 	mailingAddress 	VARCHAR(255),
-	rating 			INT,
+	rating 			NUMERIC,
 	contactNumber 	INT,
 	name 			VARCHAR(255) NOT NULL,
 	image			VARCHAR(255)
