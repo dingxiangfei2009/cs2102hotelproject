@@ -81,9 +81,9 @@
             <table border="0" cellspacing="0" cellpadding="2">
             <tr>
             <td nowrap id="checkin"><p>Check In Date :</p></td>
-            <td id="calendar">
+            <td>
          		<p>
-         		  <?php
+         		<?php
 					//get class into the page
 					require_once('calendar/classes/tc_calendar.php');
 					
@@ -97,7 +97,8 @@
 					$myCalendar->setAlignment('left', 'bottom');
 					$myCalendar->writeScript();  
 				?>
-       		  </p></td>
+       		    </p>
+       		</td>
             </tr>
             </table>
             
@@ -105,7 +106,7 @@
           	<tr>
             <td nowrap id="checkout"><p>Check Out Date :</p></td>
             <p>&nbsp;</p>
-            <td id = "calendar">
+            <td>
             	<?php
 					//get class into the page
 					require_once('calendar/classes/tc_calendar.php');

@@ -24,16 +24,24 @@
 						
 						
 		// check if the form has been submitted
+		$error = false;
 		if (isset($_POST['cancel'])) {
 			// head back to room page
 			header('Location: room.php');
 		} else if (isset($_POST['confirm'])) {
-			// push all the info to database and insert into booking table, 
-			$_SESSION['paymentInfo'] = $booking;
-			
-			// direct the page to receipt
-			header('Location: receipt.php');
+			$conn = new Connector();
+			if (insertBooking($conn, array())) {
+				// direct the page to receipt
+				header('Location: receipt.php');
+			} else {
+				$error = true;
+			}
 		}
+
+		$conn = new Connector();
+		$resultSet = queryHotelInformation($conn, $roomInfo['zipcode']);
+		$resultSet($hotelName, $x, $x, $x, $x);
+		$resultSet($x, $x, $x, $x, $x, false);
 	}
 	
 	// TODO: xhtml dropped, use html5 instead
@@ -87,7 +95,6 @@
             			<tr>
             				<td>
             					<input disabled="disabled" type="text" value="<?php echo $roomType?>">
-<?php // Do you have a dropdown here to select room type ?>
             				</td>
             			</tr>
             			<tr>
@@ -97,6 +104,21 @@
             			</tr>
             			<tr>
             				<td>
+
+<?php
+	//get class into the page
+	require_once('calendar/classes/tc_calendar.php');
+	
+	$myCalendar = new tc_calendar("checkInDate", true, false);
+	$myCalendar->setIcon("calendar/images/iconCalendar.gif");
+	$myCalendar->setPath("calendar/");
+	$myCalendar->setDate(date('d'), date('m'), date('Y'));
+	$myCalendar->setYearInterval(2014, 2015);
+	$myCalendar->dateAllow('2014-10-31', '2015-03-01');
+	$myCalendar->setDateFormat('j F Y');
+	$myCalendar->setAlignment('left', 'bottom');
+	$myCalendar->writeScript();  
+?>
             				</td>
             			</tr>
             			<tr>
@@ -106,6 +128,17 @@
             			</tr>
             			<tr>
             				<td>
+<?php
+		$myCalendar = new tc_calendar("checkOutDate", true, false);
+		$myCalendar->setIcon("calendar/images/iconCalendar.gif");
+		$myCalendar->setPath("calendar/");
+		$myCalendar->setDate(date('d'), date('m'), date('Y'));
+		$myCalendar->setYearInterval(2014, 2015);
+		$myCalendar->dateAllow('2014-10-31', '2015-03-01');
+		$myCalendar->setDateFormat('j F Y');
+		$myCalendar->setAlignment('left', 'bottom');
+		$myCalendar->writeScript();  
+?>
             				</td>
         				</tr>
             		</table>
@@ -123,7 +156,7 @@
     </div>
     
     <div id="footer">
-	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	<p>&copy; Copyright 2014 Wang YanHao &amp;&amp; Ding XiangFei</p>
 	</div>
 </body>
 </html>

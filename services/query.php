@@ -194,17 +194,34 @@ function queryHotelBookings() {
  * insertBooking
  *
  */
-function insertBooking($conn, $roomNumber, $hotel, $checkIn, $checkOut) {
-	$stmt = $conn->createPreparedStatement(
-		'select floor(rand() * 2147483648) as result from MakeBooking b where b.id <> result limit 1');
-	$stmt = $conn->createPreparedStatement(
-		'insert into Booking
-		select
-		from MakeBooking b');
-	$stmt->bind(1) or report($stmt->error);
-	$rs = false;
-	$stmt->bind_result($rs);
-	$stmt->fetch();
+function insertBooking($conn, $entry) {
+	while (true) {
+		$stmt = $conn->createPreparedStatement('select * from MakeBooking where id = ?');
+		$stmt->bind_param('i', $id = rand(0, 2147483647));
+		$stmt->execute();
+		if ($stmt->query())
+			$stmt->close();
+		else {
+			$stmt->close();
+			break;
+		}
+	}
+	var_dump($id);
+	$stmt = $conn->createPreparedStatement('
+		insert into MakeBooking values (?,?,?,?,?,?,?,?,null)
+		');
+	$stmt->bind_param('isssssdss',
+		$id,
+		$entry['emailAddress'],
+		$entry['checkInDate'],
+		$entry['checkOutDate'],
+		$entry['checkInTime'],
+		$entry['checkOutTime'],
+		$entry['price'],
+		$entry['paymentMethod']) or report($stmt->error);
+	$retVal = $stmt->execute();
+	$stmt->close();
+	return $retVal;
 }
 
 /**
