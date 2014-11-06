@@ -29,6 +29,13 @@
 			// head back to room page
 			header('Location: room.php');
 		} else if (isset($_POST['confirm'])) {
+			// check if user has input check in and check out 
+			if ($_SESSION['searchInfo']["date1"] == "0000-00-00" || $_SESSION['searchInfo']["date2"] == "0000-00-00") {
+				// no specific date
+				
+				
+			}
+			
 			$conn = new Connector();
 			if (insertBooking($conn, array())) {
 				// direct the page to receipt

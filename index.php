@@ -92,9 +92,10 @@
 					$myCalendar->setPath("calendar/");
 					$myCalendar->setDate(date('d'), date('m'), date('Y'));
 					$myCalendar->setYearInterval(2014, 2015);
-					$myCalendar->dateAllow('2014-10-31', '2015-03-01');
+					$myCalendar->dateAllow('2014-11-08', '2015-03-01', false);
 					$myCalendar->setDateFormat('j F Y');
 					$myCalendar->setAlignment('left', 'bottom');
+					$myCalendar->setDatePair('date1', 'date2'); 
 					$myCalendar->writeScript();  
 				?>
        		    </p>
@@ -116,9 +117,10 @@
 					$myCalendar->setPath("calendar/");
 					$myCalendar->setDate(date('d'), date('m'), date('Y'));
 					$myCalendar->setYearInterval(2014, 2015);
-					$myCalendar->dateAllow('2014-10-31', '2015-03-01');
+					$myCalendar->dateAllow('2014-11-08', '2015-03-01', false);
 					$myCalendar->setDateFormat('j F Y');
 					$myCalendar->setAlignment('left', 'bottom');
+					$myCalendar->setDatePair('date1', 'date2'); 
 					$myCalendar->writeScript();  
 				?>
         	</td>

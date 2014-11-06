@@ -128,7 +128,7 @@
                   
                   <p>
                     <label for="email">Email:
-                    <?php if ($missing && in_array('email', $missing)) { ?>
+                    <?php if (isset($_POST['register']) && $missing && in_array('email', $missing)) { ?>
                       <span class="warning">Please enter your Email Address.</span>
                     <?php } ?>
                     </label>
@@ -140,7 +140,7 @@
                   
                   <p>
                     <label for="pwd">Password:
-                    <?php if ($missing && in_array('email', $missing)) { ?>
+                    <?php if (isset($_POST['register']) && $missing && in_array('email', $missing)) { ?>
                       <span class="warning">Please enter a valid password.</span>
                     <?php } ?>
                     </label>
@@ -148,7 +148,7 @@
                   </p>
                   <p>
                     <label for="conf_pwd">Confirm Password:
-                    <?php if ($missing && in_array('email', $missing)) { ?>
+                    <?php if (isset($_POST['register']) && $missing && in_array('email', $missing)) { ?>
                       <span class="warning">Please enter a valid password.</span>
                     <?php } ?>
                     </label>

@@ -80,6 +80,7 @@
                 <p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
                 <p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
                 <p>Contact Number:&nbsp;&nbsp;<?php echo $contactNumber ?></p>
+                <p> </p>
                 </div>
                 <?php
                     $resultSet($x, $x, $x, $x, $x, false);
@@ -99,12 +100,14 @@
 					$roomPicID = "picWrapper".$n;
             ?>
             <div type="roomInfo" id="<?php echo $roomTypeId ?>">
-				<h2><?php echo $roomTypes[$n] ?></h2>
+            	<p> </p>
                 <div id="<?php echo $roomPicID ?>">
                 	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
                 </div>
+				<h2><?php echo $roomTypes[$n] ?></h2>
 				<p>Minimum Price: <?php echo $minPrice ?></p>
 				<p>Availability: <?php echo $avail ?></p>
+                <p> </p>
             </div>
             <?php
                     $n++;

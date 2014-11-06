@@ -100,7 +100,7 @@ a#here {
 
 #mainContent {
     margin: 0 10% 0 100px;
-	float: right;
+	float: left;
     min-width: 525px;
     max-width: 640px;
 }
