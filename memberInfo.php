@@ -132,19 +132,22 @@
 						<p>Mailing Address:&nbsp;&nbsp;<?php echo $mailingAdd ?></p>
 						<p>Contact Number:&nbsp;&nbsp;<?php echo $contact_no ?></p>
 						<p></p>
+					</div>
 						<form action="" method="post" id="editUserInfo"> 
 						<p>
 							<input type="submit" name="edit" id="edit" value="Edit">
 						</p>
 						</form>
-						<?php 
-							if (!empty($bookings)) {
-								// print booking details for each booking
-								// same as the one in payment page
-									
-							}
-						?>
-					</div>
+                        
+                        <div id="userBookings">
+							<?php 
+                                if (!empty($bookings)) {
+                                    // print booking details for each booking
+                                    // same as the one in payment page
+                                        
+                                }
+                            ?>
+                        </div>
 					<?php
 				}
 			}

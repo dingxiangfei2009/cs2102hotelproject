@@ -171,12 +171,18 @@ label {
     display: block;
 }
 
+#roomTypesTitle {
+	font-size: 18px;
+	margin-bottom:20px;
+}
+
 #selectType{
 	display:block;
 }
 
-input[type=radio   ]:not(old) + Label{
+input[type=radio]:not(old) + Label{
   display : inline-block;
+  margin-bottom:20px;
 }
 
 
@@ -193,12 +199,14 @@ input[type=radio   ]:not(old) + Label{
 	font-weight: bold;
     color: #036;
 	display: block;
+	padding-top: 20px;
 }
 
 #checkout {
 	font-weight: bold;
 	color: #036;
 	display: block;
+	padding-top: 10px;
 }
 
 #calendar {
@@ -211,12 +219,22 @@ input[type=radio   ]:not(old) + Label{
 #userInfo {
 	color: #036;	
 	font-size: 20px;
+	margin-left: 22px;
 }
 
 #hotelInfo {
 	color: #036;
 	padding-bottom: 120px;
 	display: block;
+}
+
+#searchBar {
+	margin-top:10px;
+	margin-left:20px;
+}
+
+#A00001 {
+	margin-bottom:20px;
 }
 
 /* The warning class makes the error messages on the feedback form bold and red. */
