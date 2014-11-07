@@ -50,9 +50,10 @@
 	<?php include('includes/menu.inc.php'); ?>
     
   <div id="mainContent">
-        <h2>Search </h2>
+        <h2 id="A00001">Search </h2>
     <form id="search" method="post" action="">
             <p>
+             <div id="searchBar">
                 <label for="Hotel Name">Hotel Name:
                 <?php if ($missing && in_array('Hotel_Name', $missing)) { ?>
                   <span class="warning">Please enter Hotel Name</span>
@@ -63,9 +64,11 @@
                  echo 'value="' . htmlentities($Hotel_Name, ENT_COMPAT, 'UTF-8') . '"';
                 } ?>
                 >
+                </div>
             </p>
             
       		<p>
+            <div id="searchBar">
                 <label for="Destination">Destination:
                 <?php if ($missing && in_array('Destination', $missing)) { ?>
                   <span class="warning">Please enter your Destination</span>
@@ -76,6 +79,7 @@
                  echo 'value="' . htmlentities($Destination, ENT_COMPAT, 'UTF-8') . '"';
                 } ?>
                 >
+            </div>
       		</p>
             
             <table border="0" cellspacing="0" cellpadding="2">
@@ -106,7 +110,6 @@
             <table border="0" cellspacing="0" cellpadding="2">
           	<tr>
             <td nowrap id="checkout"><p>Check Out Date :</p></td>
-            <p>&nbsp;</p>
             <td>
             	<?php
 					//get class into the page
