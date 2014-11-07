@@ -80,7 +80,7 @@
             
             <table border="0" cellspacing="0" cellpadding="2">
             <tr>
-            <td nowrap id="checkin"><p>Check In Date :</p></td>
+            <td nowrap id="checkin"><p>Check In Date :&nbsp&nbsp&nbsp</p></td>
             <td>
          		<p>
          		<?php

@@ -186,6 +186,11 @@ label {
 	display: block;
 }
 
+#userInfo {
+	color: #036;	
+	font-size: 20px;
+}
+
 /* The warning class makes the error messages on the feedback form bold and red. */
 
 .warning {

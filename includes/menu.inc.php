@@ -40,4 +40,12 @@
 				?>
         	>Login / Reg</a>
         </li>
+        <li><a href="memberInfo.php"
+        		<?php 
+					if ($currentPage == 'memberInfo.php') {
+						echo 'id="here"';
+					} 
+				?>
+        	>User Info</a>
+        </li>
 	</ul>
