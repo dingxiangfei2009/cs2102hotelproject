@@ -233,6 +233,13 @@ input[type=radio]:not(old) + Label{
 	margin-left:20px;
 }
 
+#bookInfoPara{
+	color: #036;
+	font-size: 15px;
+	margin-top: 10px;
+	font-weight: bold;
+}
+
 #A00001 {
 	margin-bottom:20px;
 }

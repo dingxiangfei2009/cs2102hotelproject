@@ -108,19 +108,17 @@
             		<table class="form">
             			<tr>
             				<td>
-            					<div>Hotel</div>
+            					<div id="bookInfoPara">Hotel</div>
             				</td>
             			</tr>
             			<tr>
             				<td>
             					<input disabled="disabled" type="text" value="<?php echo $_SESSION['hotelInfo']['name'] ?>"/>
-            					<input disabled="disabled" type="text" value="<?php echo $roomNumber ?>"/>
-            					<input type="hidden" name="roomNumber" value="<?php echo $roomNumber ?>"/>
-            				</td>
+                            </td>
             			</tr>
             			<tr>
             				<td>
-            					<div>Room Type</div>
+            					<div id="bookInfoPara">Room Type</div>
             				</td>
             			</tr>
             			<tr>
@@ -128,9 +126,19 @@
             					<input disabled="disabled" type="text" value="<?php echo $roomInfo['roomType']?>"/>
             				</td>
             			</tr>
+                        <tr>
+            				<td>
+            					<div id="bookInfoPara">Room Number</div>
+            				</td>
+            			</tr>
+            			<tr>
+                        	<td>
+            					<input disabled="disabled" type="text" name="roomNumber" value="<?php echo $roomNumber ?>"/>
+            				</td>
+            			</tr>
             			<tr>
             				<td>
-            					<div>Check In Date</div>
+            					<div id="bookInfoPara">Check In Date</div>
             				</td>
             			</tr>
             			<tr>
@@ -140,7 +148,7 @@
             			</tr>
             			<tr>
             				<td>
-            					<div>Check Out Date</div>
+            					<div id="bookInfoPara">Check Out Date</div>
             				</td>
             			</tr>
             			<tr>
@@ -150,7 +158,7 @@
         				</tr>
         				<tr>
         					<td>
-        						<div>Price</div>
+        						<div id="bookInfoPara">Price</div>
         					</td>
         				</tr>
         				<tr>
@@ -161,7 +169,7 @@
         				</tr>
         				<tr>
         					<td>
-        						<div>Payment Method</div>
+        						<div id="bookInfoPara">Payment Method</div>
         					</td>
         				</tr>
         				<tr>
@@ -174,7 +182,7 @@
         					</td>
         				</tr>
             		</table>
-            		<div>
+            		<div id="bookInfoPara">
             			<input type="submit" name="confirm" id="confirm" value="Confirm"/>&nbsp;&nbsp;
             			<input type="submit" name="cancel" id="cancel" value="Cancel"/>
             		</div>
