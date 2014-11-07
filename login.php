@@ -3,10 +3,15 @@
 	include('./includes/title.inc.php');
 	
 	if (isset($_POST['login'])) {
-		// check for validity of the user name and password
+		// check for validity of the email and password
 		$isValid = true;
+		$userEMail = $_POST['login']['loginUserEMail'];
+		$userPwd = $_POST['login']['loginPwd'];
+		
+		// check
 		
 		if ($isValid) {
+			$_SESSION['email'] = $_POST['login']['loginUserEMail'];
 			$_SESSION['login'] = true;
 			header($_SESSION['userPosi']);
 		} else {
@@ -80,8 +85,8 @@
         	<h2>Login </h2>
         	  <form action="" method="post" id="loginForm">
                   <p>
-                    <label for="loginUsername">Username:</label>
-                    <input type="text" name="loginUsername" id="loginUsername">
+                    <label for="loginUserEMail">E-mail:</label>
+                    <input type="text" name="loginUserEMail" id="loginUserEMail">
                   </p>
                   <p>
                     <label for="loginPwd">Password:</label>

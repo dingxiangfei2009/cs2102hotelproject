@@ -107,10 +107,16 @@
 						$picID = "picWrapper".$i;
 						// ------ start result iteration------
 			?>
+            <div id="hotelInfo">
 			<div id="<?php echo $divID ?>">
-			<h2><a href="room.php?zipcode=<?php echo $zipCode?>"><?php echo $name?></a></h2>
+			<h2>
+            	<a href="room.php?zipcode=<?php 
+					$_SESSION['zipcode'] = $zipCode;
+					echo $zipCode?>">
+				<?php echo $name?></a>
+            </h2>
             <div id="<?php echo $picID ?>">
-            	<img src="<?php echo $image ?>" width="100" height="100" align="right" />
+            	<img src="<?php echo $image ?>" width="150" height="150" align="right" />
             </div>
 			<p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
 			<p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
@@ -118,6 +124,7 @@
 			<p>Availability:&nbsp;&nbsp;<?php echo $avail ?></p>
 			<p>Contact Number:&nbsp;&nbsp;<?php echo $contactNumber ?></p>
 			</div>
+            </div>
             <?php
             		// ------ end result iteration ------
             		$i++;

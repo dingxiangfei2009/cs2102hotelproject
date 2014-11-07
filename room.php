@@ -6,9 +6,13 @@
 	$_SESSION['userPosi'] = 'Location: room.php';
 	
 	$isStarted = isset($_GET['zipcode']);
+	$isVisited = isset($_SESSION['zipcode']);
 	if ($isStarted) {
 		// variable store the specific hotel been selected by the user
+		$_SESSION['zipcode'] = $_GET['zipcode'];
 		$zipcode = $_GET['zipcode'];
+	} else if ($isVisited) {
+		$zipcode = $_SESSION['zipcode'];
 	}
 	
 	$missing = false;
@@ -50,11 +54,11 @@
         
         <div id="mainContent">
         <?php 
-			if (!$isStarted) {
+			if (!$isStarted && !$isVisited) {
 				// display warning	
 				?>
                 <div id="noSearchWarning">
-                    <h2><span class="warning">Please search for hotels via the Home Page. </span></h2>
+                    <h2><span class="warning">Please search for hotels via the Home Page.?></span></h2>
                 </div>
                 <?php
 			} else {
@@ -75,7 +79,7 @@
                 <div>
                 <h2><a href="room.php?zipcode=<?php echo $zipcode?>"><?php echo $name ?></a></h2>
                 <div id="<?php echo $picID ?>">
-                    <img src="<?php echo $image ?>" width="100" height="100" align="right" />
+                    <img src="<?php echo $image ?>" width="150" height="150" align="right" />
                 </div>
                 <p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
                 <p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
@@ -101,12 +105,12 @@
                     $roomTypeId = "roomTypeId".$n;
 					$roomPicID = "picWrapper".$n;
             ?>
-            <div type="roomInfo" id="<?php echo $roomTypeId ?>">
+            <div type="roomInfo" id="hotelInfo">
             	<p> </p>
+				<h2><?php echo $roomArray[$n]['type'] ?></h2>
                 <div id="<?php echo $roomPicID ?>">
                 	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
                 </div>
-				<h2><?php echo $roomTypes[$n] ?></h2>
 				<p>Minimum Price: <?php echo $minPrice ?></p>
 				<p>Availability: <?php echo $avail ?></p>
                 <p> </p>
@@ -118,32 +122,31 @@
             ?>
             
             <form id="selectRoom" method="post" action="room.php">
-            	<fieldset id="roomTypes">
-                	<h2>
-                    <label for="roomTypes">Choose a Type: 
+            	<fieldset id="roomType">
+                	<h2 id="roomTypesTitle">
+                    <label for="roomType">Choose a Type: 
                     <?php if ($missing) { ?>
                       <span class="warning">Please choose a type to make payment.</span>
                     <?php } ?>
                     </label>
                     </h2>
-                    <div>
                     	<?php 
 							// for each room type, create a checkbox option
 							for ($i = 0; $i < $n; $i++) {
                     			$roomTypeId = "roomTypeId".$roomArray[$i]['type'];
 						?>
-                        <input type="checkbox" name="roomTypes[]" value="<?php echo $roomArray[$i]['type'] ?>" 
+                    <div id="selectType">
+                        <input type="radio" name="roomType[]" value="<?php echo $roomArray[$i]['type'] ?>" 
                         <?php
         						if (isset($_POST['roomTypes']))
-        							if (in_array($roomArray[$i]['type'], $_POST['roomTypes']))
+        							if (in_array($roomArray[$i]['type'], $_POST['roomType']))
         							  echo 'checked';
 						?> id="<?php echo $roomTypeId ?>" />
                         <label for="<?php echo $roomTypeId ?>"><?php echo $roomArray[$i]['type'] ?></label>
-                      
+                    </div>
                         <?php
                             }
 						?>
-                    </div>
                 </fieldset>
                 
                 <p>
