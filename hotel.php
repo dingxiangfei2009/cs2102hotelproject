@@ -98,10 +98,11 @@
 						$isCheckOutValid ? $checkOutDate : '',
 						$orderBy);
 
-					$i = 0;
+					$i = 0; $noSearchResult = true;
 					while ($resultSet($name, $mailingAddress, $zipCode,
 								$rating, $contactNumber, $image, $avail,
 								$minPrice, $maxPrice)) {
+						$noSearchResult = false;
 						$divID = "result".$i;
 						$picID = "picWrapper".$i;
 						// ------ start result iteration------
@@ -122,6 +123,11 @@
             		$i++;
 					}
                 }
+                if ($noSearchResult) {
+            ?>
+            <div>Sorry, no hotel matches your search.</div>
+            <?php
+            	}
             ?>
         </div>
     </div>
