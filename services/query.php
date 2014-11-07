@@ -136,7 +136,7 @@ function queryHotelInformation($conn, $zipCode) {
 function queryHotelRooms($conn, $zipCode, $checkInDate, $checkOutDate) {
 	$stmt = $conn->createPreparedStatement('
 		select r.type, min(r.price) as minPrice,
-		count(r.roomNumber) as avail
+		count(r.roomNumber) as avail, min(r.image) as image
 		from Room r
 		where (r.zipCode = ?)
 			and not exists (
@@ -159,6 +159,7 @@ function queryHotelRooms($conn, $zipCode, $checkInDate, $checkOutDate) {
 		&$type,
 		&$minPrice,
 		&$avail,
+		&$image,
 		$continue = true
 		) use (&$stmt, &$eof) {
 		if ($eof)
@@ -166,7 +167,8 @@ function queryHotelRooms($conn, $zipCode, $checkInDate, $checkOutDate) {
 		$stmt->bind_result(
 			$type,
 			$minPrice,
-			$avail) or report($stmt->error);
+			$avail,
+			$image) or report($stmt->error);
 		$retVal = false;
 		if ($continue)
 			$retVal = $stmt->fetch();
@@ -183,18 +185,18 @@ function queryHotelRooms($conn, $zipCode, $checkInDate, $checkOutDate) {
 function queryHotelChooseAvailableRoomWithType($conn, $zipCode, $roomType, $checkInDate, $checkOutDate, &$roomNumber, &$price) {
 	$stmt = $conn->createPreparedStatement('
 		select r.roomNumber, r.price
-		from Room.r
-		where (r.zipCode = ?) and (r.roomType = ?) and not exists (
+		from Room r
+		where (r.zipCode = ?) and (r.type = ?) and not exists (
 			select b.id
 			from MakeBooking b, Contains c
 			where (b.id = c.bookingId) and (c.zipCode = r.zipCode) and (c.roomNumber = r.roomNumber)
 			and ((b.checkOutDate > ?) or (b.checkInDate < ?))
 			)
-		order by r.price asc
+		order by r.price asc limit 1
 		');
 	if (!$stmt)
 		report($conn->getError());
-	$stmt->bind_param() or report($stmt->error);
+	$stmt->bind_param('isss', $zipCode, $roomType, $checkInDate, $checkOutDate) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
 	$roomNumber = null;
 	$stmt->bind_result($roomNumber, $price) or report($stmt->error);
@@ -225,22 +227,25 @@ function queryHotelBookings() {
  *
  */
 function insertBooking($conn, $entry) {
+	$id = 0;
 	while (true) {
+		$id = rand(0, 2147483647);
 		$stmt = $conn->createPreparedStatement('select * from MakeBooking where id = ?');
-		$stmt->bind_param('i', $id = rand(0, 2147483647));
-		$stmt->execute();
-		if ($stmt->query())
+		$stmt->bind_param('i', $id) or report($stmt->error);
+		$stmt->execute() or report($stmt->error);
+		if ($stmt->fetch())
 			$stmt->close();
 		else {
 			$stmt->close();
 			break;
 		}
 	}
-	// var_dump($id);
 	$stmt = $conn->createPreparedStatement('
-		insert into MakeBooking values (?,?,?,?,?,?,?,?,null)
+		insert into MakeBooking (
+			id,emailAddress,checkInDate,checkOutDate,checkInTime,
+			checkOutTime,price,paymentMethod,payDate) values (?,?,?,?,?,?,?,?,null)
 		');
-	$stmt->bind_param('isssssdss',
+	$stmt->bind_param('isssssds',
 		$id,
 		$entry['emailAddress'],
 		$entry['checkInDate'],
@@ -251,12 +256,17 @@ function insertBooking($conn, $entry) {
 		$entry['paymentMethod']) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
 	$stmt->close();
-	$stmt = $conn->createPreparedStatement(
-		''
-		);
+	$stmt = $conn->createPreparedStatement('insert into Contains values (?,?,?)');
 	if (!$stmt)
 		report($conn->getError());
-	return $retVal;
+	$stmt->bind_param('iii',
+		$id,
+		$entry['roomNumber'],
+		$entry['zipCode']
+		) or report($stmt->error);
+	$stmt->execute() or report($stmt->error);
+	$stmt->close();
+	return true;
 }
 
 /**

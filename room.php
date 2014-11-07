@@ -9,10 +9,9 @@
 	$isVisited = isset($_SESSION['zipcode']);
 	if ($isStarted) {
 		// variable store the specific hotel been selected by the user
-		$_SESSION['zipcode'] = $_GET['zipcode'];
-		$zipcode = $_GET['zipcode'];
+		$zipCode = $_SESSION['zipcode'] = intval($_GET['zipcode']);
 	} else if ($isVisited) {
-		$zipcode = $_SESSION['zipcode'];
+		$zipCode = $_SESSION['zipcode'];
 	}
 	
 	$missing = false;
@@ -27,7 +26,7 @@
 		if (!$missing) {
 			$_SESSION['roomInfo'] = array(
                 'roomType' => $_POST['roomType'],
-                'zipcode' => $zipcode);
+                'zipCode' => $zipCode);
 			header('Location: payment.php');
 		} else {
 			$message = "Please select a room type.";
@@ -68,25 +67,28 @@
             	<?php 
 					// display hotel information
                     $conn = new Connector();
-                    $resultSet = queryHotelInformation($conn, $zipcode);
+                    $resultSet = queryHotelInformation($conn, $zipCode);
+                    $hotelInfo = array();
+                    $hotelInfo['zipCode'] = $zipCode;
                     $resultSet(
-                        $name,
-                        $mailingAddress,
-                        $rating,
-                        $contactNumber,
-                        $image);
+                        $hotelInfo['name'],
+                        $hotelInfo['mailingAddress'],
+                        $hotelInfo['rating'],
+                        $hotelInfo['contactNumber'],
+                        $hotelInfo['image']);
 				?>
                 <div>
-                <h2><a href="room.php?zipcode=<?php echo $zipcode?>"><?php echo $name ?></a></h2>
+                <h2><a href="room.php?zipcode=<?php echo $zipCode?>"><?php echo $hotelInfo['name'] ?></a></h2>
                 <div id="<?php echo $picID ?>">
-                    <img src="<?php echo $image ?>" width="150" height="150" align="right" />
+                    <img src="<?php echo $hotelInfo['image'] ?>" width="150" height="150" align="right" />
                 </div>
-                <p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
-                <p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
-                <p>Contact Number:&nbsp;&nbsp;<?php echo $contactNumber ?></p>
+                <p>Rating:&nbsp;&nbsp;<?php echo $hotelInfo['rating'] ?></p>
+                <p>Address:&nbsp;&nbsp;<?php echo $hotelInfo['mailingAddress'] ?></p>
+                <p>Contact Number:&nbsp;&nbsp;<?php echo $hotelInfo['contactNumber'] ?></p>
                 <p> </p>
                 </div>
                 <?php
+                    $_SESSION['hotelInfo'] = $hotelInfo;
                     $resultSet($x, $x, $x, $x, $x, false);
                 ?>
             </div>
@@ -94,10 +96,10 @@
             <?php
                 $checkInDate = $_SESSION['searchInfo']['date1'];
                 $checkOutDate = $_SESSION['searchInfo']['date2'];
-                $resultSet = queryHotelRooms($conn, $zipcode, $checkInDate, $checkOutDate);
+                $resultSet = queryHotelRooms($conn, $zipCode, $checkInDate, $checkOutDate);
                 $n = 0;
                 $roomArray = array();
-                while ($resultSet($type, $minPrice, $avail)) {
+                while ($resultSet($type, $minPrice, $avail, $image)) {
                     $roomArray[$n] = array();
                     $roomArray[$n]['type'] = $type;
                     $roomArray[$n]['minPrice'] = $minPrice;
@@ -109,7 +111,7 @@
             	<p> </p>
 				<h2><?php echo $roomArray[$n]['type'] ?></h2>
                 <div id="<?php echo $roomPicID ?>">
-                	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
+                	<img src="<?php echo $image?>" width="100" height="100" align="right" />
                 </div>
 				<p>Minimum Price: <?php echo $minPrice ?></p>
 				<p>Availability: <?php echo $avail ?></p>
@@ -118,7 +120,7 @@
             <?php
                     $n++;
                 }
-                $resultSet($x, $x, $x, false);
+                $resultSet($x, $x, $x, $x, false);
             ?>
             
             <form id="selectRoom" method="post" action="room.php">
@@ -136,10 +138,10 @@
                     			$roomTypeId = "roomTypeId".$roomArray[$i]['type'];
 						?>
                     <div id="selectType">
-                        <input type="radio" name="roomType[]" value="<?php echo $roomArray[$i]['type'] ?>" 
+                        <input type="radio" name="roomType" value="<?php echo $roomArray[$i]['type'] ?>" 
                         <?php
-        						if (isset($_POST['roomTypes']))
-        							if (in_array($roomArray[$i]['type'], $_POST['roomType']))
+        						if (isset($_POST['roomType']))
+        							if ($roomArray[$i]['type'] === $_POST['roomType'])
         							  echo 'checked';
 						?> id="<?php echo $roomTypeId ?>" />
                         <label for="<?php echo $roomTypeId ?>"><?php echo $roomArray[$i]['type'] ?></label>
@@ -152,7 +154,7 @@
                 <p>
                 	<input name="sendPaymentRequest" id="sendPaymentRequest" type="submit" value="Make Payment">
            		</p>
-                <input type="hidden" name="zipcode" value="<?php echo $zipcode ?>"/>
+                <input type="hidden" name="zipcode" value="<?php echo $zipCode ?>"/>
             </form>
             <?php 
 			}

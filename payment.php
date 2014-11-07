@@ -15,20 +15,12 @@
 		
 		// calculate the price needed to pay
 		$totalPrice = 100;
-		
-		// dummy booking array
-		$booking = array('bookId' => $bookingId,
-						'price' => $totalPrice,
-						'hotelName' => 'Hotel Name',
-						'roomType' => $roomInfo['roomTypes'],
-						'checkInDate' => '05/12/2014',
-						'checkOutDate' => '18/01/2015');
-						
 						
 		// check if the form has been submitted
 		$error = false;
         $checkInDate = $_SESSION['searchInfo']['date1'];
         $checkOutDate = $_SESSION['searchInfo']['date2'];
+		$conn = new Connector();
 		queryHotelChooseAvailableRoomWithType(
 			$conn,
 			$roomInfo['zipCode'],
@@ -46,18 +38,18 @@
 			header('Location: room.php');
 		} else if (isset($_POST['confirm'])) {
 			// check if user has input check in and check out 
-			if ($_SESSION['searchInfo']['date1'] === '0000-00-00' || $_SESSION['searchInfo']['date2'] === '0000-00-00') {
+			if ($_SESSION['searchInfo']['date1'] == '0000-00-00' || $_SESSION['searchInfo']['date2'] == '0000-00-00') {
 				// no specific date
 				header('Location: index.php');
 				exit();
-			} else if ($_POST['price'] != $price) {
+			} else if ($_POST['price'] != $price || $_POST['roomNumber'] != $roomNumber) {
 				header('Location: room.php');
 				exit();
 			}
 			
-			$conn = new Connector();
 			$info = array(
-				'zipCode' => 
+				'zipCode' => $roomInfo['zipCode'],
+				'roomNumber' => $roomNumber,
 				'emailAddress' => $_SESSION['email'],
 				'checkInDate' => $searchInfo['date1'],
 				'checkOutDate' => $searchInfo['date2'],
@@ -76,8 +68,7 @@
 			}
 		}
 
-		$conn = new Connector();
-		$resultSet = queryHotelInformation($conn, $roomInfo['zipcode']);
+		$resultSet = queryHotelInformation($conn, $roomInfo['zipCode']);
 		$resultSet($hotelName, $x, $x, $x, $x);
 		$resultSet($x, $x, $x, $x, $x, false);
 	}
@@ -113,7 +104,7 @@
 		// display the booking details
 ?>
         	<div id="bookingInfo">
-            	<form action="payment.php">
+            	<form action="payment.php" method="post">
             		<table class="form">
             			<tr>
             				<td>
@@ -122,7 +113,9 @@
             			</tr>
             			<tr>
             				<td>
-            					<input disabled="disabled" type="text" value="<?php echo $hotelName ?>"/>
+            					<input disabled="disabled" type="text" value="<?php echo $_SESSION['hotelInfo']['name'] ?>"/>
+            					<input disabled="disabled" type="text" value="<?php echo $roomNumber ?>"/>
+            					<input type="hidden" name="roomNumber" value="<?php echo $roomNumber ?>"/>
             				</td>
             			</tr>
             			<tr>
@@ -132,7 +125,7 @@
             			</tr>
             			<tr>
             				<td>
-            					<input disabled="disabled" type="text" value="<?php echo $roomType?>">
+            					<input disabled="disabled" type="text" value="<?php echo $roomInfo['roomType']?>"/>
             				</td>
             			</tr>
             			<tr>
@@ -142,7 +135,7 @@
             			</tr>
             			<tr>
             				<td>
-            					<input disabled="disabled" type="text" value="<?php echo $_SESSION['searchInfo']['date1']?>">
+            					<input disabled="disabled" type="text" value="<?php echo $_SESSION['searchInfo']['date1']?>"/>
             				</td>
             			</tr>
             			<tr>
@@ -152,7 +145,7 @@
             			</tr>
             			<tr>
             				<td>
-            					<input disabled="disabled" type="text" value="<?php echo $_SESSION['searchInfo']['date2']?>">
+            					<input disabled="disabled" type="text" value="<?php echo $_SESSION['searchInfo']['date2']?>"/>
             				</td>
         				</tr>
         				<tr>
@@ -162,7 +155,8 @@
         				</tr>
         				<tr>
         					<td>
-        						<input disabled="disabled" type="text" value="<?php echo $roomInfo?>">
+        						<input disabled="disabled" type="text" value="<?php echo $price?>"/>
+        						<input type="hidden" name="price" value="<?php echo $price?>"/>
         					</td>
         				</tr>
         				<tr>
