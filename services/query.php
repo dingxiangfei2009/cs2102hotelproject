@@ -133,18 +133,26 @@ function queryHotelInformation($conn, $zipCode) {
 /**
  * queryHotelRooms
  */
-function queryHotelRooms($conn, $zipCode) {
+function queryHotelRooms($conn, $zipCode, $checkInDate, $checkOutDate) {
 	$stmt = $conn->createPreparedStatement('
 		select r.type, min(r.price) as minPrice,
 		count(r.roomNumber) as avail
 		from Room r
 		where (r.zipCode = ?)
+			and not exists (
+				select b.id
+				from MakeBooking b, Contains c
+				where (b.id = c.bookingId)
+					and (c.roomNumber = r.roomNumber)
+					and (c.zipCode = r.zipCode)
+					and ((b.checkOutDate > ?) or (b.checkOutDate < ?))
+				)
 		group by r.type
 		order by minPrice desc
 		');
 	if (!$stmt)
 		report($conn->getError());
-	$stmt->bind_param('i', $zipCode);
+	$stmt->bind_param('iss', $zipCode, $checkInDate, $checkOutDate);
 	$stmt->execute() or report($stmt->error);
 	$eof = false;
 	return function (
@@ -170,6 +178,28 @@ function queryHotelRooms($conn, $zipCode) {
 			return $retVal;
 		}
 	};
+}
+
+function queryHotelChooseAvailableRoomWithType($conn, $zipCode, $roomType, $checkInDate, $checkOutDate, &$roomNumber, &$price) {
+	$stmt = $conn->createPreparedStatement('
+		select r.roomNumber, r.price
+		from Room.r
+		where (r.zipCode = ?) and (r.roomType = ?) and not exists (
+			select b.id
+			from MakeBooking b, Contains c
+			where (b.id = c.bookingId) and (c.zipCode = r.zipCode) and (c.roomNumber = r.roomNumber)
+			and ((b.checkOutDate > ?) or (b.checkInDate < ?))
+			)
+		order by r.price asc
+		');
+	if (!$stmt)
+		report($conn->getError());
+	$stmt->bind_param() or report($stmt->error);
+	$stmt->execute() or report($stmt->error);
+	$roomNumber = null;
+	$stmt->bind_result($roomNumber, $price) or report($stmt->error);
+	$stmt->fetch();	// just first one
+	$stmt->close();
 }
 
 /**
@@ -206,7 +236,7 @@ function insertBooking($conn, $entry) {
 			break;
 		}
 	}
-	var_dump($id);
+	// var_dump($id);
 	$stmt = $conn->createPreparedStatement('
 		insert into MakeBooking values (?,?,?,?,?,?,?,?,null)
 		');
@@ -219,8 +249,13 @@ function insertBooking($conn, $entry) {
 		$entry['checkOutTime'],
 		$entry['price'],
 		$entry['paymentMethod']) or report($stmt->error);
-	$retVal = $stmt->execute();
+	$stmt->execute() or report($stmt->error);
 	$stmt->close();
+	$stmt = $conn->createPreparedStatement(
+		''
+		);
+	if (!$stmt)
+		report($conn->getError());
 	return $retVal;
 }
 

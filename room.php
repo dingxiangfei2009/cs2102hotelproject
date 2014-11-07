@@ -16,13 +16,13 @@
 	
 	// check if the form has been submitted
     if (isset($_POST['sendPaymentRequest'])) {
-		if (empty($_POST['roomTypes'])) {
+		if (empty($_POST['roomType'])) {
 			$missing = true;
 		}
 		
 		if (!$missing) {
 			$_SESSION['roomInfo'] = array(
-                'roomTypes' => $_POST['roomTypes'],
+                'roomType' => $_POST['roomType'],
                 'zipcode' => $zipcode);
 			header('Location: payment.php');
 		} else {
@@ -75,7 +75,7 @@
                 <div>
                 <h2><a href="room.php?zipcode=<?php echo $zipcode?>"><?php echo $name ?></a></h2>
                 <div id="<?php echo $picID ?>">
-                    <img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
+                    <img src="<?php echo $image ?>" width="100" height="100" align="right" />
                 </div>
                 <p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
                 <p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
@@ -88,7 +88,9 @@
             </div>
             
             <?php
-                $resultSet = queryHotelRooms($conn, $zipcode);
+                $checkInDate = $_SESSION['searchInfo']['date1'];
+                $checkOutDate = $_SESSION['searchInfo']['date2'];
+                $resultSet = queryHotelRooms($conn, $zipcode, $checkInDate, $checkOutDate);
                 $n = 0;
                 $roomArray = array();
                 while ($resultSet($type, $minPrice, $avail)) {

@@ -110,7 +110,7 @@
 			<div id="<?php echo $divID ?>">
 			<h2><a href="room.php?zipcode=<?php echo $zipCode?>"><?php echo $name?></a></h2>
             <div id="<?php echo $picID ?>">
-            	<img src="calendar/images/disable_date_bg.png" width="100" height="100" align="right" />
+            	<img src="<?php echo $image ?>" width="100" height="100" align="right" />
             </div>
 			<p>Rating:&nbsp;&nbsp;<?php echo $rating ?></p>
 			<p>Address:&nbsp;&nbsp;<?php echo $mailingAddress ?></p>
