@@ -276,4 +276,23 @@ function insertBooking($conn, $entry) {
 function updateBooking($conn, $bookingId, $roomNumber, $hotel, $checkIn, $checkOut) {
 	return;
 }
+
+function validUser($conn, $email, $pass) {
+	$stmt = $conn->createPreparedStatement(
+		'select u.name, u.birthday, u.sex, u.contactNumber
+		from Customer u
+		where (u.email = ?) and (u.pass = ?)
+		');
+	if (!$stmt)
+		report($conn->getError());
+	$stmt->bind_param('ss', $email, $pass) or report($stmt);
+	$stmt->execute() or report($stmt->error);
+	$retVal = array();
+	$stmt->bind_result($retVal['name'], $retVal['birthday'], $retVal['sex'], $retVal['contactNumber'])
+		or report($stmt->error);
+	if ($stmt->fetch())
+		return $retVal;
+	else
+		return null;
+}
 ?>
