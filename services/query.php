@@ -265,8 +265,9 @@ function insertBooking($conn, $entry) {
 		$entry['zipCode']
 		) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
+	$retVal = $conn->affected_rows;
 	$stmt->close();
-	return true;
+	return $retVal;
 }
 
 /**
@@ -281,7 +282,7 @@ function validUser($conn, $email, $pass) {
 	$stmt = $conn->createPreparedStatement(
 		'select u.name, u.birthday, u.sex, u.contactNumber
 		from Customer u
-		where (u.email = ?) and (u.pass = ?)
+		where (u.email = ?) and (u.pass = ?) limit 1
 		');
 	if (!$stmt)
 		report($conn->getError());
@@ -294,5 +295,24 @@ function validUser($conn, $email, $pass) {
 		return $retVal;
 	else
 		return null;
+}
+
+function updateUser($conn, $email, $info) {
+	$stmt = $conn->createPreparedStatement('
+		update Customer
+		values contactNumber = ?, name = ?, mailingAddress = ?
+		where email = ?
+		');
+	if (!$stmt)
+		report($conn->getError());
+	$stmt->bind_param('ssss',
+		$info['contactNumber'],
+		$info['name'],
+		$info['mailingAddress'],
+		$email) or report($stmt->error);
+	$stmt->execute() or report($stmt->error);
+	$retVal = $conn->affected_rows;
+	$stmt->close();
+	return $retVal;
 }
 ?>
