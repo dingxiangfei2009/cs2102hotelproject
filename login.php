@@ -1,17 +1,19 @@
 <?php
+  require_once('services/query.php');
 	session_start();
 	include('./includes/title.inc.php');
 	
 	if (isset($_POST['login'])) {
 		// check for validity of the email and password
 		$isValid = true;
-		$userEMail = $_POST['login']['loginUserEMail'];
+		$userEmail = $_POST['login']['loginUserEmail'];
 		$userPwd = $_POST['login']['loginPwd'];
-		
+		$conn = new Connector();
 		// check
+    $isValid = !!validUser($conn, $userEmail, $userPwd);
 		
 		if ($isValid) {
-			$_SESSION['email'] = $_POST['login']['loginUserEMail'];
+			$_SESSION['email'] = $userEmail;
 			$_SESSION['login'] = true;
 			header($_SESSION['userPosi']);
 		} else {
@@ -85,8 +87,8 @@
         	<h2>Login </h2>
         	  <form action="" method="post" id="loginForm">
                   <p>
-                    <label for="loginUserEMail">E-mail:</label>
-                    <input type="text" name="loginUserEMail" id="loginUserEMail">
+                    <label for="loginUserEmail">E-mail:</label>
+                    <input type="text" name="loginUserEmail" id="loginUserEmail">
                   </p>
                   <p>
                     <label for="loginPwd">Password:</label>
