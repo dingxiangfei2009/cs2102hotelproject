@@ -11,12 +11,12 @@
 		$conn = new Connector();
 		// check
     $isValid = validUser($conn, $userEmail, $userPwd);
-    var_dump($isValid);
 		
 		if ($isValid) {
 			$_SESSION['email'] = $userEmail;
 			$_SESSION['login'] = true;
 			header($_SESSION['userPosi']);
+      exit();
 		} else {
 			$message = "User name or password is invalid!  Please try again.";
 			echo "<script type='text/javascript'>alert('$message');</script>";	
@@ -53,15 +53,23 @@
 				$pwdError = true;
 			} else {
 				
-				$regUserInfo = $_POST;
+				$regUserInfo = array(
+          'emailAddress' => $_POST['email'],
+          'contactNumber' => $_POST['contact_no'],
+          'name' => $_POST['username'],
+          'sex' => $_POST['sex'] == 'male' ? 'MALE' : 'FEMALE',
+          'mailingAddress' => $_POST['mailAdd'],
+          'password' => $_POST['pwd']
+          );
 				// SQL database check if primary key has been violated
-				
+        $conn = new Connector();
 				// add into SQL database
 				
-				$isRegSuc = true;
+				$isRegSuc = insertUser($conn, $regUserInfo);
 				
 				if ($isRegSuc) {
 					// successfully logged in,
+          $_SESSION['email'] = $regUserInfo['emailAddress'];
 					$_SESSION['login'] = true;
 					header($_SESSION['userPosi']);
 				} else {
@@ -126,13 +134,13 @@
                   <p>
                     <label for="sex" id="sex">Sex:</label>
                     <p>
-                        <input name="sex" type="radio" value="Male" id="sex-male" 
+                        <input name="sex" type="radio" value="male" id="sex-male" 
                         <?php
                         if ($_POST && $_POST['sex'] == 'male') { 
                           echo 'checked';
                         } ?>>
                         <label for="sex-male" id="sex">Male</label>
-                        <input name="sex" type="radio" value="Female" id="sex-female" 
+                        <input name="sex" type="radio" value="female" id="sex-female" 
                         <?php
                         if ($_POST && $_POST['sex'] == 'female') {
                           echo 'checked';
@@ -196,7 +204,7 @@
    </div>
    
    <div id="footer">
-	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	<p>&copy; Copyright 2014 Wang YanHao &amp; Ding XiangFei</p>
 	</div>
 </body>
 </html>

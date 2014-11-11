@@ -18,7 +18,9 @@ CREATE TABLE MakeBooking (
 	price			NUMERIC  NOT NULL,
 	paymentMethod 	VARCHAR(255),
 	payDate 		DATE,
-	FOREIGN KEY (emailAddress) REFERENCES Customer(emailAddress) ON DELETE CASCADE
+	FOREIGN KEY (emailAddress) REFERENCES Customer(emailAddress)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 );
 
 

@@ -303,10 +303,10 @@ function insertUser($conn, $info) {
 		$info['mailingAddress'],
 		$info['password']
 		) or report($stmt->error);
-	$stmt->execute() or report($stmt->error);
+	$stmt->execute();// or report($stmt->error);
 	$retVal = $conn->getAffectedRows();
 	$stmt->close();
-	return $retVal;
+	return $retVal > 0;
 }
 
 function validUser($conn, $email, $pass) {
