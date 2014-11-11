@@ -78,9 +78,11 @@
 			} else {
 				// check if user is editing his information
 				if ($isEditing) { ?>
-					<div id="editing">
+					<div id="userInfo">
                     	<p>Username:&nbsp;&nbsp;<?php echo $username ?></p>
 						<p>Sex:&nbsp;&nbsp;<?php echo $sex ?></p>
+                        </div>
+                    <div id="editing">
 						<form action="" method="post" id="editing">
 							  <p>
                                 <label for="email">Email:
