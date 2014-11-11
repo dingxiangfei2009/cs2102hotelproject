@@ -3,7 +3,8 @@ CREATE TABLE Customer (
 	contactNumber 	INT,
 	name 			VARCHAR(255) NOT NULL,
 	sex				VARCHAR(6) CHECK (sex = 'MALE' or sex = 'FEMALE'),
-	mailingAddress 	VARCHAR(255)
+	mailingAddress 	VARCHAR(255),
+	password		VARCHAR(255) NOT NULL
 );
 
 
