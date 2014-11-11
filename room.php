@@ -24,10 +24,21 @@
 		}
 		
 		if (!$missing) {
-			$_SESSION['roomInfo'] = array(
-                'roomType' => $_POST['roomType'],
-                'zipCode' => $zipCode);
-			header('Location: payment.php');
+			if (!$_SESSION['login']) {
+				// not logged in
+				header('Location: login.php');
+			} else {
+				// check if check in and check out date are set
+				if ($_SESSION['searchInfo']["date1"] == "0000-00-00" || $_SESSION['searchInfo']["date2"] == "0000-00-00") {
+					$message = "Please select check in and check out date at home page.";
+					echo "<script type='text/javascript'>alert('$message');</script>";
+				} else {
+					$_SESSION['roomInfo'] = array(
+						'roomType' => $_POST['roomType'],
+						'zipCode' => $zipCode);
+					header('Location: payment.php');
+				}
+			} 
 		} else {
 			$message = "Please select a room type.";
 			echo "<script type='text/javascript'>alert('$message');</script>";	
