@@ -17,5 +17,8 @@ class Connector {
 	public function getError() {
 		return $this->conn->error;
 	}
+	public function getAffectedRows() {
+		return $this->conn->affected_rows;
+	}
 }
 ?>

@@ -231,6 +231,8 @@ function insertBooking($conn, $entry) {
 	while (true) {
 		$id = rand(0, 2147483647);
 		$stmt = $conn->createPreparedStatement('select * from MakeBooking where id = ?');
+		if (!$stmt)
+			report($conn->getError());
 		$stmt->bind_param('i', $id) or report($stmt->error);
 		$stmt->execute() or report($stmt->error);
 		if ($stmt->fetch())
@@ -245,6 +247,8 @@ function insertBooking($conn, $entry) {
 			id,emailAddress,checkInDate,checkOutDate,checkInTime,
 			checkOutTime,price,paymentMethod,payDate) values (?,?,?,?,?,?,?,?,null)
 		');
+	if (!$stmt)
+		report($conn->getError());
 	$stmt->bind_param('isssssds',
 		$id,
 		$entry['emailAddress'],
@@ -255,6 +259,8 @@ function insertBooking($conn, $entry) {
 		$entry['price'],
 		$entry['paymentMethod']) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
+	if ($conn->getAffectedRows() == 0)
+		return -1;
 	$stmt->close();
 	$stmt = $conn->createPreparedStatement('insert into Contains values (?,?,?)');
 	if (!$stmt)
@@ -265,9 +271,9 @@ function insertBooking($conn, $entry) {
 		$entry['zipCode']
 		) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
-	$retVal = $conn->affected_rows;
+	$retVal = $conn->getAffectedRows();
 	$stmt->close();
-	return $retVal;
+	return $retVal > 0 ? $id : -1;
 }
 
 /**
@@ -298,23 +304,23 @@ function insertUser($conn, $info) {
 		$info['password']
 		) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
-	$retVal = $conn->affected_rows;
+	$retVal = $conn->getAffectedRows();
 	$stmt->close();
 	return $retVal;
 }
 
 function validUser($conn, $email, $pass) {
 	$stmt = $conn->createPreparedStatement(
-		'select u.name, u.birthday, u.sex, u.contactNumber
+		'select u.name, u.sex, u.contactNumber
 		from Customer u
-		where (u.email = ?) and (u.pass = ?) limit 1
+		where (u.emailAddress = ?) and (u.password = ?) limit 1
 		');
 	if (!$stmt)
 		report($conn->getError());
 	$stmt->bind_param('ss', $email, $pass) or report($stmt);
 	$stmt->execute() or report($stmt->error);
 	$retVal = array();
-	$stmt->bind_result($retVal['name'], $retVal['birthday'], $retVal['sex'], $retVal['contactNumber'])
+	$stmt->bind_result($retVal['name'], $retVal['sex'], $retVal['contactNumber'])
 		or report($stmt->error);
 	if ($stmt->fetch())
 		return $retVal;
@@ -336,7 +342,7 @@ function updateUser($conn, $email, $info) {
 		$info['mailingAddress'],
 		$email) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
-	$retVal = $conn->affected_rows;
+	$retVal = $conn->getAffectedRows();
 	$stmt->close();
 	return $retVal;
 }

@@ -7,6 +7,8 @@
 	$isStarted = isset($_SESSION['roomInfo']);
 	
 	$booking = array();
+    $info = null;
+    $error = true;
 	
 	if($isStarted) {		
 		// assign the booking details based on chosen hotel's info
@@ -17,7 +19,6 @@
 		$totalPrice = 100;
 						
 		// check if the form has been submitted
-		$error = false;
         $checkInDate = $_SESSION['searchInfo']['date1'];
         $checkOutDate = $_SESSION['searchInfo']['date2'];
 		$conn = new Connector();
@@ -37,7 +38,7 @@
 			// head back to room page
 			header('Location: room.php');
 		} else if (isset($_POST['confirm'])) {
-			// check if user has input check in and check out 
+			// check if user has input check in and check out
 			if ($_SESSION['searchInfo']['date1'] == '0000-00-00' || $_SESSION['searchInfo']['date2'] == '0000-00-00') {
 				// no specific date
 				header('Location: index.php');
@@ -58,14 +59,8 @@
 				'price' => $price,
 				'paymentMethod' => $_POST['paymentMethod']
 			);
-			if (insertBooking($conn, $info)) {
-				// direct the page to receipt
-				$_SESSION['bookingInfo'] = $info;
-				header('Location: receipt.php');
-				exit();
-			} else {
-				$error = true;
-			}
+            $id = insertBooking($conn, $info);
+            $error = $id < 0;
 		}
 
 		$resultSet = queryHotelInformation($conn, $roomInfo['zipCode']);
@@ -100,7 +95,7 @@
                 <h2><span class="warning">or select a room via the Hotel Page! </span></h2>
             </div>
 <?php
-    } else {
+    } else if ($error) {
 		// display the booking details
 ?>
         	<div id="bookingInfo">
@@ -133,7 +128,8 @@
             			</tr>
             			<tr>
                         	<td>
-            					<input disabled="disabled" type="text" name="roomNumber" value="<?php echo $roomNumber ?>"/>
+            					<input disabled="disabled" type="text" value="<?php echo $roomNumber ?>" />
+                                <input type="hidden" name="roomNumber" value="<?php echo $roomNumber ?>" />
             				</td>
             			</tr>
             			<tr>
@@ -190,7 +186,109 @@
             </div>
 <?php
 	// end of form
-	}
+	} else {
+?>
+            <div id="bookingInfo">
+                <table class="form">
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Booking ID</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $id ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Hotel</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $hotelName ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Room Type</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $roomInfo['roomType']?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Room Number</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $info['roomNumber'] ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Check In Date</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $info['checkInDate']?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Check Out Date</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $info['checkOutDate']?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Price</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $price?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="bookInfoPara">Payment Method</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php
+                                switch ($info['paymentMethod']) {
+                                case 'visa':
+                                    echo 'Visa';
+                                    break;
+                                case 'mastercard':
+                                    echo 'MasterCard';
+                                    break;
+                                case 'wired':
+                                    echo 'Wired';
+                                    break;
+                                }
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <a href="index.php">Back</a>
+                </div>
+            </div>
+<?php
+    }
 ?>
         </div>
     </div>

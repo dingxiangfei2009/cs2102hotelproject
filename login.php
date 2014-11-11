@@ -6,11 +6,12 @@
 	if (isset($_POST['login'])) {
 		// check for validity of the email and password
 		$isValid = true;
-		$userEmail = $_POST['login']['loginUserEmail'];
-		$userPwd = $_POST['login']['loginPwd'];
+		$userEmail = $_POST['loginUserEmail'];
+		$userPwd = $_POST['loginPwd'];
 		$conn = new Connector();
 		// check
-    $isValid = !!validUser($conn, $userEmail, $userPwd);
+    $isValid = validUser($conn, $userEmail, $userPwd);
+    var_dump($isValid);
 		
 		if ($isValid) {
 			$_SESSION['email'] = $userEmail;
@@ -88,14 +89,14 @@
         	  <form action="" method="post" id="loginForm">
                   <p>
                     <label for="loginUserEmail">E-mail:</label>
-                    <input type="text" name="loginUserEmail" id="loginUserEmail">
+                    <input type="text" name="loginUserEmail"/>
                   </p>
                   <p>
                     <label for="loginPwd">Password:</label>
-                    <input type="password" name="loginPwd" id="loginPwd">
+                    <input type="password" name="loginPwd"/>
                   </p>
                   <p>
-                    <input type="submit" name="login" id="login" value="Login">
+                    <input type="submit" name="login" value="Login">
                   </p>
             </form>
         	</div>
