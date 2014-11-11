@@ -25,6 +25,7 @@
 	
 		
 	$missing = array();
+	$pwdError = false;
 	$username = "";
 	$email = "";
 	$contact_no = "";
@@ -47,21 +48,27 @@
 		}
 		
 		if (empty($missing)) {
-			$regUserInfo = $_POST;
-			// SQL database check if primary key has been violated
-			
-			// add into SQL database
-			
-			$isRegSuc = true;
-			
-			if ($isRegSuc) {
-				// successfully logged in,
-				$_SESSION['login'] = true;
-				header($_SESSION['userPosi']);
+			// check validity for pwd and confirmPwd
+			if ($_POST['pwd'] != $_POST['conf_pwd']) {
+				$pwdError = true;
 			} else {
-				// reg unseccessful, display error msg
-				$message = "Registration failed.";
-				echo "<script type='text/javascript'>alert('$message');</script>";	
+				
+				$regUserInfo = $_POST;
+				// SQL database check if primary key has been violated
+				
+				// add into SQL database
+				
+				$isRegSuc = true;
+				
+				if ($isRegSuc) {
+					// successfully logged in,
+					$_SESSION['login'] = true;
+					header($_SESSION['userPosi']);
+				} else {
+					// reg unseccessful, display error msg
+					$message = "Registration failed.";
+					echo "<script type='text/javascript'>alert('$message');</script>";	
+				}
 			}
 		}
 	}
@@ -111,7 +118,7 @@
                     <?php } ?>
                     </label>
                     <input type="text" name="username" id="username"
-                    <?php if ($missing) { 
+                    <?php if ($missing || $pwdError) { 
 					 echo 'value="' . htmlentities($username, ENT_COMPAT, 'UTF-8') . '"';
 					} ?>>
                   </p>
@@ -141,7 +148,7 @@
                     <?php } ?>
                     </label>
                     <input type="email" name="email" id="email"
-                    <?php if ($missing) { 
+                    <?php if ($missing || $pwdError) { 
 					 echo 'value="' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '"';
 					} ?>>
                   </p>
@@ -150,7 +157,9 @@
                     <label for="pwd">Password:
                     <?php if (isset($_POST['register']) && $missing && in_array('email', $missing)) { ?>
                       <span class="warning">Please enter a valid password.</span>
-                    <?php } ?>
+                    <?php } else if ($pwdError){ ?>
+						<span class="warning">Two passward must be consistent.</span>
+					<?php } ?>
                     </label>
                     <input type="password" name="pwd" id="pwd">
                   </p>
@@ -166,14 +175,14 @@
                   <p>
                     <label for="contact_no">Contact Number:</label>
                     <input type="tel" name="contact_no" id="contact_no" class="formbox"
-                    <?php if ($missing) { 
+                    <?php if ($missing || $pwdError) { 
 					 echo 'value="' . htmlentities($contact_no, ENT_COMPAT, 'UTF-8') . '"';
 					} ?>>
                   </p>
                   <p>
                     <label for="mailAdd">Mailing Address:</label>
                     <input type="text" name="mailAdd" id="mailAdd" class="formbox"
-                    <?php if ($missing) { 
+                    <?php if ($missing || $pwdError) { 
 					 echo 'value="' . htmlentities($mailAdd, ENT_COMPAT, 'UTF-8') . '"';
 					} ?>>
                   </p>
