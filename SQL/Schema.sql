@@ -49,7 +49,8 @@ CREATE TABLE Contains (
 	bookingId 	INT,
 	roomNumber 	INT,
 	zipCode 	INT,
-	FOREIGN KEY (bookingId) REFERENCES MakeBooking(id),
+	FOREIGN KEY (bookingId) REFERENCES MakeBooking(id)
+		ON DELETE CASCADE,
 	FOREIGN KEY (roomNumber, zipCode) REFERENCES Room(roomNumber, zipCode),
 	PRIMARY KEY (bookingId, roomNumber, zipCode)
 );

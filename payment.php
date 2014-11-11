@@ -21,6 +21,9 @@
 		// check if the form has been submitted
         $checkInDate = $_SESSION['searchInfo']['date1'];
         $checkOutDate = $_SESSION['searchInfo']['date2'];
+        $days = ((new DateTime($checkOutDate))
+                    ->diff(new DateTime($checkInDate))
+                    ->days);
 		$conn = new Connector();
 		queryHotelChooseAvailableRoomWithType(
 			$conn,
@@ -52,11 +55,11 @@
 				'zipCode' => $roomInfo['zipCode'],
 				'roomNumber' => $roomNumber,
 				'emailAddress' => $_SESSION['email'],
-				'checkInDate' => $searchInfo['date1'],
-				'checkOutDate' => $searchInfo['date2'],
+				'checkInDate' => $checkInDate,
+				'checkOutDate' => $checkOutDate,
 				'checkInTime' => '12:0:0',
 				'checkOutTime' => '12:0:0',	// TODO
-				'price' => $price,
+				'price' => $price * $days,
 				'paymentMethod' => $_POST['paymentMethod']
 			);
             $id = insertBooking($conn, $info);
@@ -159,7 +162,7 @@
         				</tr>
         				<tr>
         					<td>
-        						<input disabled="disabled" type="text" value="<?php echo $price?>"/>
+        						<input disabled="disabled" type="text" value="<?php echo $price * $days ?>"/>
         						<input type="hidden" name="price" value="<?php echo $price?>"/>
         					</td>
         				</tr>
@@ -257,7 +260,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <?php echo $price?>
+                            <?php echo $info['price']?>
                         </td>
                     </tr>
                     <tr>
@@ -283,6 +286,7 @@
                         </td>
                     </tr>
                 </table>
+                <p>&nbsp;</p>
                 <div>
                     <a href="index.php">Back</a>
                 </div>

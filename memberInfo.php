@@ -1,12 +1,14 @@
 <?php
 	session_start();
+	require_once('services/query.php');
 	include('./includes/title.inc.php');
 	
 	
+	$conn = new Connector();
 	$isLoggedIn = false;
 	if (isset($_SESSION['login'])) {
 		// user is logged in
-		if ($_SESSION['login'] == true) {
+		if ($_SESSION['login'] === true) {
 			$isLoggedIn = true;
 		}
 	}
@@ -40,15 +42,20 @@
 			header('Location: memberInfo.php');
 			exit();
 		}
+	} else if (isset($_POST['delete'])) {
+		deleteBooking($conn, $_POST['bookingId']);
 	}
 	
-	$username = "";
-	$sex = "";
-	$email = "";
-	$mailingAdd = "";
-	$contact_no = "";
-	$bookings = array();
-	
+	$email = $_SESSION['email'];
+	$userInfo = queryUser($conn, $email);
+	if (!$userInfo) {
+		header('Location: login.php');
+		exit();
+	}
+	$sex = $userInfo['sex'] == 'MALE' ? 'Male' : 'Female';
+	$username = $userInfo['name'];
+	$mailingAdd = $userInfo['mailingAddress'];
+	$contact_no = $userInfo['contactNumber'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -81,21 +88,10 @@
 					<div id="userInfo">
                     	<p>Username:&nbsp;&nbsp;<?php echo $username ?></p>
 						<p>Sex:&nbsp;&nbsp;<?php echo $sex ?></p>
+						<p>Email:&nbsp;&nbsp;<?php echo $email ?></p>
                         </div>
                     <div id="editing">
 						<form action="" method="post" id="editing">
-							  <p>
-                                <label for="email">Email:
-                                <?php if (isset($_POST['editing']) && $missing && in_array('email', $missing)) { ?>
-                                  <span class="warning">Please enter your Email Address.</span>
-                                <?php } ?>
-                                </label>
-                                <input type="email" name="email" id="email" value="<?php echo $email ?>"
-                                <?php if ($missing) { 
-                                 echo 'value="' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '"';
-                                } ?>>
-                              </p>
-                              
                               <p>
                                 <label for="pwd">Password:
                                 <?php if (isset($_POST['register']) && $missing && in_array('email', $missing)) { ?>
@@ -143,14 +139,116 @@
                         
                         <div id="userBookings">
 							<?php 
-                                if (!empty($bookings)) {
-                                    // print booking details for each booking
-                                    // same as the one in payment page
-                                        
+                                // print booking details for each booking
+                                // same as the one in payment page
+                                $n = 0;
+                                $bookings = array();
+                                $resultSet = queryUserBookings($conn, $email);
+                                while ($resultSet($bookingId, $hotelName, $hotelImage, $roomNumber, $roomType, $checkInDate, $checkOutDate, $price))
+                                	$bookings[$n++] = array(
+                                		'bookingId' => $bookingId,
+                                		'hotelName' => $hotelName,
+                                		'hotelImage' => $hotelImage,
+                                		'roomNumber' => $roomNumber,
+                                		'roomType' => $roomType,
+                                		'checkInDate' => $checkInDate,
+                                		'checkOutDate' => $checkOutDate,
+                                		'price' => $price
+                                		);
+                                foreach ($bookings as $entry) {
+                            ?>
+
+			                <table class="form">
+			                    <tr>
+			                        <td>
+			                            <div id="bookInfoPara">Booking ID</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <?php echo $entry['bookingId'] ?>
+			                        </td>
+			                    </tr>
+			                    <tr><td>
+								        <div>
+								        	<img src="<?php echo $entry['hotelImage'] ?>" width="150" height="150" align="right" />
+								        </div>
+			                    </td></tr>
+			                    <tr>
+			                        <td>
+			                            <div id="bookInfoPara">Hotel</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <?php echo $entry['hotelName'] ?>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <div id="bookInfoPara">Room Type</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                        	<?php echo $entry['roomType'] ?>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <div id="bookInfoPara">Room Number</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <?php echo $entry['roomNumber'] ?>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <div id="bookInfoPara">Check In Date</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <?php echo $entry['checkInDate'] ?>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <div id="bookInfoPara">Check Out Date</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <?php echo $entry['checkOutDate'] ?>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <div id="bookInfoPara">Price</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>
+			                            <?php echo $entry['price'] ?>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                    	<td>
+			                    		<form action="" method="post">
+			                    			<input type="hidden" name="bookingId" value="<?php echo $entry['bookingId'] ?>"/>
+			                    			<input type="submit" name="delete" value="Delete"/>
+			                    		</form>
+			                    	</td>
+			                    </tr>
+			                </table>
+                            <?php
                                 }
                             ?>
+
                         </div>
-					<?php
+		<?php
 				}
 			}
 		?>
@@ -158,7 +256,7 @@
    </div>
    
    <div id="footer">
-	<p>&copy; Copyright 2014 Wang YanHao && Ding XiangFei</p>
+	<p>&copy; Copyright 2014 Wang YanHao &amp; Ding XiangFei</p>
 	</div>
 </body>
 </html>

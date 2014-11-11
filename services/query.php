@@ -284,6 +284,28 @@ function updateBooking($conn, $bookingId, $roomNumber, $hotel, $checkIn, $checkO
 	return;
 }
 
+function queryUser($conn, $email) {
+	$stmt = $conn->createPreparedStatement('
+		select u.contactNumber, u.name, u.sex, u.mailingAddress
+		from Customer u
+		where (u.emailAddress = ?) limit 1
+		');
+	if (!$stmt)
+		report($conn->getError());
+	$stmt->bind_param('s', $email) or report($stmt->error);
+	$stmt->execute() or report($stmt->error);
+	$retVal = array();
+	$stmt->bind_result(
+		$retVal['contactNumber'],
+		$retVal['name'],
+		$retVal['sex'],
+		$retVal['mailingAddress']) or report($stmt->error);
+	if (!$stmt->fetch())
+		$retVal = null;
+	$stmt->close();
+	return $retVal;
+}
+
 /**
  * insertUser
  */
@@ -303,7 +325,7 @@ function insertUser($conn, $info) {
 		$info['mailingAddress'],
 		$info['password']
 		) or report($stmt->error);
-	$stmt->execute();// or report($stmt->error);
+	$stmt->execute();
 	$retVal = $conn->getAffectedRows();
 	$stmt->close();
 	return $retVal > 0;
@@ -322,16 +344,16 @@ function validUser($conn, $email, $pass) {
 	$retVal = array();
 	$stmt->bind_result($retVal['name'], $retVal['sex'], $retVal['contactNumber'])
 		or report($stmt->error);
-	if ($stmt->fetch())
-		return $retVal;
-	else
-		return null;
+	if (!$stmt->fetch())
+		$retVal = null;
+	$stmt->close();
+	return $retVal;
 }
 
 function updateUser($conn, $email, $info) {
 	$stmt = $conn->createPreparedStatement('
 		update Customer
-		values contactNumber = ?, name = ?, mailingAddress = ?
+		values contactNumber = ?, name = ?, mailingAddress = ?, 
 		where email = ?
 		');
 	if (!$stmt)
@@ -345,5 +367,70 @@ function updateUser($conn, $email, $info) {
 	$retVal = $conn->getAffectedRows();
 	$stmt->close();
 	return $retVal;
+}
+
+function queryUserBookings($conn, $user) {
+	$stmt = $conn->createPreparedStatement('
+		select b.id, h.name, h.image, r.roomNumber, r.type,
+		b.checkInDate, b.checkOutDate, b.price
+		from MakeBooking b, Contains c, Room r, Hotel h
+		where (b.id = c.bookingId)
+			and (b.emailAddress = ?)
+			and (h.zipCode = r.zipCode)
+			and (c.roomNumber = r.roomNumber)
+			and (c.zipCode = r.zipCode)
+		');
+	if (!$stmt)
+		report($conn->getError());
+	$stmt->bind_param('s', $user) or report($stmt->error);
+	$stmt->execute() or report($stmt->error);
+	$eof = false;
+	return function (
+		&$bookingId,
+		&$hotelName,
+		&$hotelImage,
+		&$roomNumber,
+		&$roomType,
+		&$checkInDate,
+		&$checkOutDate,
+		&$price,
+		$continue = true
+		) use (&$stmt, &$eof) {
+		if ($eof)
+			return null;
+		$stmt->bind_result(
+			$bookingId,
+			$hotelName,
+			$hotelImage,
+			$roomNumber,
+			$roomType,
+			$checkInDate,
+			$checkOutDate,
+			$price) or report($stmt->error);
+		$retVal = false;
+		if ($continue)
+			$retVal = $stmt->fetch();
+		if ($retVal)
+			return $retVal;
+		else {
+			$eof = true;
+			$stmt->close();
+			return $retVal;
+		}
+	};
+}
+
+function deleteBooking($conn, $bookingId) {
+	$stmt = $conn->createPreparedStatement('
+		delete from MakeBooking
+		where id = ?
+		');
+	if (!$stmt)
+		report($conn->getError());
+	$stmt->bind_param('i', $bookingId) or report($stmt->error);
+	$stmt->execute();
+	$retVal = $conn->getAffectedRows();
+	$stmt->close();
+	return $retVal > 0;
 }
 ?>
