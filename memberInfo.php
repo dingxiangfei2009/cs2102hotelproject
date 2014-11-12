@@ -135,8 +135,7 @@
 							<input type="submit" name="edit" id="edit" value="Edit">
 						</p>
 						</form>
-                        
-                        <div id="userBookings">
+                        <div>
 							<?php 
                                 // print booking details for each booking
                                 // same as the one in payment page
@@ -157,89 +156,91 @@
                                 foreach ($bookings as $entry) {
                             ?>
 
-          <div id="bookingInfoPic">
-								        	<img src="<?php echo $entry['hotelImage'] ?>" width="180" height="180" align="right" />
-								        </div>
-			                <table class="form">
-			                    <tr>
-			                        <td>
-			                            <div id="bookInfoPara">Booking ID</div>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <?php echo $entry['bookingId'] ?>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <div id="bookInfoPara">Hotel</div>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <?php echo $entry['hotelName'] ?>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <div id="bookInfoPara">Room Type</div>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                        	<?php echo $entry['roomType'] ?>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <div id="bookInfoPara">Room Number</div>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <?php echo $entry['roomNumber'] ?>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <div id="bookInfoPara">Check In Date</div>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <?php echo $entry['checkInDate'] ?>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <div id="bookInfoPara">Check Out Date</div>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <?php echo $entry['checkOutDate'] ?>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <div id="bookInfoPara">Price</div>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                        <td>
-			                            <?php echo $entry['price'] ?>
-			                        </td>
-			                    </tr>
-			                    <tr>
-			                    	<td>
-			                    		<form action="" method="post">
-			                    			<input type="hidden" name="bookingId" value="<?php echo $entry['bookingId'] ?>"/>
-			                    			<input type="submit" name="delete" value="Delete"/>
-			                    		</form>
-			                    	</td>
-			                    </tr>
-			                </table>
+                        	<div id="userBookings">
+								<div id="bookingInfoPic">
+						        	<img src="<?php echo $entry['hotelImage'] ?>" width="180" height="180" align="right" />
+						        </div>
+				                <table class="form">
+				                    <tr>
+				                        <td>
+				                            <div id="bookInfoPara">Booking ID</div>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <?php echo $entry['bookingId'] ?>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <div id="bookInfoPara">Hotel</div>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <?php echo $entry['hotelName'] ?>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <div id="bookInfoPara">Room Type</div>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                        	<?php echo $entry['roomType'] ?>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <div id="bookInfoPara">Room Number</div>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <?php echo $entry['roomNumber'] ?>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <div id="bookInfoPara">Check In Date</div>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <?php echo $entry['checkInDate'] ?>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <div id="bookInfoPara">Check Out Date</div>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <?php echo $entry['checkOutDate'] ?>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <div id="bookInfoPara">Price</div>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                        <td>
+				                            <?php echo $entry['price'] ?>
+				                        </td>
+				                    </tr>
+				                    <tr>
+				                    	<td>
+				                    		<form action="" method="post">
+				                    			<input type="hidden" name="bookingId" value="<?php echo $entry['bookingId'] ?>"/>
+				                    			<input type="submit" name="delete" value="Delete"/>
+				                    		</form>
+				                    	</td>
+				                    </tr>
+				                </table>
+				            </div>
                             <?php
                                 }
                             ?>
