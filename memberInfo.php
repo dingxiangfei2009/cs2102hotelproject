@@ -21,7 +21,7 @@
 	$missing = array();
 	if (isset($_POST['editing'])) {
 		// user submit edited form
-		$required = array('email', 'pwd');
+		$required = array('pwd');
 		
 		// process $_POST variables
 		foreach ($_POST as $key => $value) {
@@ -35,12 +35,11 @@
 		}
 		
 		if (empty($missing)) {
-			$userUpdatedInfo = $_POST;
 			// update successfully, save data to DataBase via SQL
-			
-			
-			header('Location: memberInfo.php');
-			exit();
+			if (updateUser($conn, $_SESSION['email'], $_POST['pwd'], $_POST['mailAdd'], $_POST['contact_no'])) {
+				header('Location: memberInfo.php');
+				exit();
+			}
 		}
 	} else if (isset($_POST['delete'])) {
 		deleteBooking($conn, $_POST['bookingId']);

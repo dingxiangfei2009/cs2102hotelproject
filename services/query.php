@@ -350,19 +350,19 @@ function validUser($conn, $email, $pass) {
 	return $retVal;
 }
 
-function updateUser($conn, $email, $info) {
+function updateUser($conn, $email, $pass, $mailingAddress, $contactNumber) {
 	$stmt = $conn->createPreparedStatement('
 		update Customer
-		values contactNumber = ?, name = ?, mailingAddress = ?, 
-		where email = ?
+		set contactNumber = ?, mailingAddress = ?
+		where (emailAddress = ?) and (password = ?)
 		');
 	if (!$stmt)
 		report($conn->getError());
-	$stmt->bind_param('ssss',
-		$info['contactNumber'],
-		$info['name'],
-		$info['mailingAddress'],
-		$email) or report($stmt->error);
+	$stmt->bind_param('isss',
+		$contactNumber,
+		$mailingAddress,
+		$email,
+		$pass) or report($stmt->error);
 	$stmt->execute() or report($stmt->error);
 	$retVal = $conn->getAffectedRows();
 	$stmt->close();
