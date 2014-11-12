@@ -157,6 +157,9 @@
                                 foreach ($bookings as $entry) {
                             ?>
 
+          <div id="bookingInfoPic">
+								        	<img src="<?php echo $entry['hotelImage'] ?>" width="180" height="180" align="right" />
+								        </div>
 			                <table class="form">
 			                    <tr>
 			                        <td>
@@ -168,11 +171,6 @@
 			                            <?php echo $entry['bookingId'] ?>
 			                        </td>
 			                    </tr>
-			                    <tr><td>
-								        <div>
-								        	<img src="<?php echo $entry['hotelImage'] ?>" width="150" height="150" align="right" />
-								        </div>
-			                    </td></tr>
 			                    <tr>
 			                        <td>
 			                            <div id="bookInfoPara">Hotel</div>
@@ -250,9 +248,9 @@
 		<?php
 				}
 			}
-		?>
+		?>7
         </div>
-   </div>
+    </div>
    
    <div id="footer">
 	<p>&copy; Copyright 2014 Wang YanHao &amp; Ding XiangFei</p>
