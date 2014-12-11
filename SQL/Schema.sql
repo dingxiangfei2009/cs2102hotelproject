@@ -13,8 +13,6 @@ CREATE TABLE MakeBooking (
 	emailAddress	VARCHAR(255),
 	checkInDate 	DATE,
 	checkOutDate 	DATE CHECK (checkInDate < checkOutDate),
-	checkInTime 	TIME,
-	checkOutTime 	TIME,
 	price			NUMERIC  NOT NULL,
 	paymentMethod 	VARCHAR(255),
 	payDate 		DATE,
